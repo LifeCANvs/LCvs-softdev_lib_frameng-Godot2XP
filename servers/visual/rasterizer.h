@@ -136,7 +136,7 @@ protected:
 			param[VS::FIXED_MATERIAL_PARAM_DETAIL] = 1.0;
 			param[VS::FIXED_MATERIAL_PARAM_EMISSION] = Color(0, 0, 0);
 			param[VS::FIXED_MATERIAL_PARAM_GLOW] = 0;
-			param[VS::FIXED_MATERIAL_PARAM_SHADE_PARAM] = 0;
+			param[VS::FIXED_MATERIAL_PARAM_SHADE_PARAM] = 0.5; // Changed to 0.5 to match FixedMaterial resource.
 			param[VS::FIXED_MATERIAL_PARAM_SPECULAR] = Color(0.0, 0.0, 0.0);
 			param[VS::FIXED_MATERIAL_PARAM_SPECULAR_EXP] = 40;
 			param[VS::FIXED_MATERIAL_PARAM_NORMAL] = 1;
