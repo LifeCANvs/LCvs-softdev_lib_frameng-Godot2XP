@@ -192,7 +192,7 @@ static _ALWAYS_INLINE_ uint32_t _atomic_sub_impl(register uint32_t *pw, register
 
 static _ALWAYS_INLINE_ uint32_t _atomic_add_impl(register uint32_t *pw, register uint32_t val) {
 
-	return InterlockedAdd((LONG volatile *)pw, val);
+	return InterlockedExchangeAdd((LONG volatile *)pw, val);
 }
 
 static _ALWAYS_INLINE_ uint32_t _atomic_exchange_if_greater_impl(register uint32_t *pw, register uint32_t val) {
@@ -222,7 +222,7 @@ static _ALWAYS_INLINE_ uint64_t _atomic_sub_impl(register uint64_t *pw, register
 
 static _ALWAYS_INLINE_ uint64_t _atomic_add_impl(register uint64_t *pw, register uint64_t val) {
 
-	return InterlockedAdd64((LONGLONG volatile *)pw, val);
+	return InterlockedExchangeAdd64((LONGLONG volatile *)pw, val);
 }
 
 static _ALWAYS_INLINE_ uint64_t _atomic_exchange_if_greater_impl(register uint64_t *pw, register uint64_t val) {

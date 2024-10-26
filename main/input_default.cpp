@@ -729,6 +729,10 @@ InputDefault::InputDefault() {
 	emulate_touch = false;
 	main_loop = NULL;
 
+	for (int i = 0; i < CURSOR_MAX; i++) {
+		custom_cursors[i] = (RES)NULL;
+	}
+
 	hat_map_default[HAT_UP].type = TYPE_BUTTON;
 	hat_map_default[HAT_UP].index = JOY_DPAD_UP;
 	hat_map_default[HAT_UP].value = 0;

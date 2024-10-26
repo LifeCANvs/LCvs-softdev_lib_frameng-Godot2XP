@@ -2601,6 +2601,10 @@ OS_Windows::OS_Windows(HINSTANCE _hInstance) {
 	meta_mem = false;
 	minimized = false;
 
+	for (int i = 0; i < CURSOR_MAX; i++) {
+		cursors[i] = (HCURSOR)NULL;
+	}
+
 	hInstance = _hInstance;
 	pressrc = 0;
 	old_invalid = true;

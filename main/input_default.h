@@ -106,7 +106,7 @@ class InputDefault : public Input {
 	SpeedTrack mouse_speed_track;
 	Map<int, Joystick> joy_names;
 	int fallback_mapping;
-	RES custom_cursors[CURSOR_MAX] = { NULL };
+	RES custom_cursors[CURSOR_MAX];// = { NULL };
 
 public:
 	enum HatMask {

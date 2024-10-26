@@ -145,7 +145,7 @@ void Range::set_unit_value(double p_value) {
 
 		double percent = (get_max() - get_min()) * p_value;
 		if (get_step() > 0) {
-			double steps = round(percent / get_step());
+			double steps = floor((percent / get_step()) + 0.5);
 			v = steps * get_step() + get_min();
 		} else {
 			v = percent + get_min();
