@@ -1,2 +1,10 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Properly detect languages on Github
+*.h linguist-language=cpp
+*.inc linguist-language=cpp
+drivers/* linguist-vendored
+
+*.cpp eol=lf
+*.h eol=lf
+*.mm eol=lf
+*.py eol=lf
+*.hpp eol=lf
