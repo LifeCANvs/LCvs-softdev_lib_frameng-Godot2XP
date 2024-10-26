@@ -847,6 +847,10 @@ class RasterizerGLES1 : public Rasterizer {
 	GLuint white_tex;
 	RID canvas_tex;
 	float canvas_opacity;
+	Color canvas_modulate;
+	bool canvas_use_modulate;
+	Transform canvas_transform;
+	CanvasItemMaterial *canvas_last_material;
 	VS::MaterialBlendMode canvas_blend;
 	_FORCE_INLINE_ Texture* _bind_canvas_texture(const RID& p_texture);
 
@@ -869,6 +873,11 @@ class RasterizerGLES1 : public Rasterizer {
 	//void _draw_primitive(int p_points, const Vector3 *p_vertices, const Vector3 *p_normals, const Color* p_colors, const Vector3 *p_uvs,const Plane *p_tangents=NULL,int p_instanced=1);
 	//void _draw_textured_quad(const Rect2& p_rect, const Rect2& p_src_region, const Size2& p_tex_size,bool p_h_flip=false, bool p_v_flip=false );
 	//void _draw_quad(const Rect2& p_rect);
+
+	template <bool use_normalmap>
+	_FORCE_INLINE_ void _canvas_item_render_commands(CanvasItem *p_item, CanvasItem *current_clip, bool &reclip);
+	_FORCE_INLINE_ void _canvas_item_setup_shader_params(CanvasItemMaterial *material, Shader *p_shader);
+	_FORCE_INLINE_ void _canvas_item_setup_shader_uniforms(CanvasItemMaterial *material, Shader *p_shader);
 
 public:
 
