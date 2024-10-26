@@ -1378,6 +1378,7 @@ String RasterizerGLES2::texture_get_path(RID p_texture) const {
 	ERR_FAIL_COND_V(!texture, String());
 	return texture->path;
 }
+
 void RasterizerGLES2::texture_debug_usage(List<VS::TextureInfo> *r_info) {
 
 	List<RID> textures;

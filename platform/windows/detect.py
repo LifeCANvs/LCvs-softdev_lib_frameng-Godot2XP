@@ -244,6 +244,7 @@ def configure(env):
         env.Append(CCFLAGS=['/DTYPED_METHOD_BIND'])
 
         env.Append(CCFLAGS=['/DGLES2_ENABLED'])
+        env.Append(CCFLAGS=['/DGLES1_ENABLED'])
 
         LIBS = ['winmm', 'opengl32', 'dsound', 'kernel32', 'ole32', 'oleaut32', 'user32', 'gdi32', 'IPHLPAPI', 'Shlwapi', 'wsock32', 'ws2_32', 'shell32', 'advapi32', 'dinput8', 'dxguid']
         env.Append(LINKFLAGS=[p + env["LIBSUFFIX"] for p in LIBS])
@@ -354,6 +355,7 @@ def configure(env):
         env.Append(CPPFLAGS=['-DRTAUDIO_ENABLED'])
         env.Append(CPPFLAGS=['-DWASAPI_ENABLED'])
         env.Append(CCFLAGS=['-DGLES2_ENABLED'])
+        env.Append(CCFLAGS=['-DGLES1_ENABLED'])
         env.Append(LIBS=['mingw32', 'opengl32', 'dsound', 'ole32', 'd3d9', 'winmm', 'gdi32', 'iphlpapi', 'shlwapi', 'wsock32', 'ws2_32', 'kernel32', 'oleaut32', 'dinput8', 'dxguid', 'ksuser'])
 
         # if (env["bits"]=="32"):

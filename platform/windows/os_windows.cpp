@@ -29,6 +29,7 @@
 /*************************************************************************/
 
 #include "drivers/gles2/rasterizer_gles2.h"
+#include "drivers/gles1/rasterizer_gles1.h"
 
 #include "drivers/unix/memory_pool_static_malloc.h"
 #include "drivers/windows/dir_access_windows.h"
@@ -143,12 +144,22 @@ void RedirectIOToConsole() {
 }
 
 int OS_Windows::get_video_driver_count() const {
-
+#if defined(GLES1_ENABLED) && defined(GLES2_ENABLED)
+	return 2;
+#else
 	return 1;
+#endif
 }
 const char *OS_Windows::get_video_driver_name(int p_driver) const {
-
+#if defined(GLES1_ENABLED) && defined(GLES2_ENABLED)
+	return p_driver == 0 ? "GLES1" : "GLES2";
+#elif defined(GLES2_ENABLED)
 	return "GLES2";
+#elif defined(GLES1_ENABLED)
+	return "GLES1";
+#else
+	return "Unknown";
+#endif
 }
 
 OS::VideoMode OS_Windows::get_default_video_mode() const {
@@ -1079,10 +1090,26 @@ void OS_Windows::initialize(const VideoMode &p_desired, int p_video_driver, int 
 		SetWindowPos(hWnd, video_mode.always_on_top ? HWND_TOPMOST : HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 	}
 
-#if defined(OPENGL_ENABLED) || defined(GLES2_ENABLED) || defined(LEGACYGL_ENABLED)
+#if defined(OPENGL_ENABLED) || defined(GLES2_ENABLED) || defined(GLES1_ENABLED)
 	gl_context = memnew(ContextGL_Win(hWnd, false));
 	gl_context->initialize();
+
+#if defined(GLES1_ENABLED) && defined(GLES2_ENABLED)
+	if (p_video_driver == 0)
+	{
+		rasterizer = memnew(RasterizerGLES1);
+	}
+	else
+	{
+		rasterizer = memnew(RasterizerGLES2);
+	}
+#elif defined(GLES2_ENABLED)
 	rasterizer = memnew(RasterizerGLES2);
+#elif defined(GLES1_ENABLED)
+	rasterizer = memnew(RasterizerGLES1);
+#endif
+
+
 #else
 #ifdef DX9_ENABLED
 	rasterizer = memnew(RasterizerDX9(hWnd));

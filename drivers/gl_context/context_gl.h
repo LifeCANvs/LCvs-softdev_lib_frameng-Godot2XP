@@ -31,7 +31,7 @@
 #ifndef CONTEXT_GL_H
 #define CONTEXT_GL_H
 
-#if defined(OPENGL_ENABLED) || defined(GLES2_ENABLED)
+#if defined(OPENGL_ENABLED) || defined(GLES2_ENABLED) || defined(GLES1_ENABLED)
 
 #include "typedefs.h"
 
