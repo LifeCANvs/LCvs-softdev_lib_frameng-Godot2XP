@@ -274,7 +274,7 @@ void EditorNode::_notification(int p_what) {
 
 		editor_selection->update();
 
-		{
+		if (audio_vu) {
 			uint32_t p32 = AudioServer::get_singleton()->read_output_peak() >> 8;
 
 			float peak = p32 == 0 ? -80 : Math::linear2db(p32 / 65535.0);
@@ -4411,11 +4411,11 @@ void EditorNode::_update_dock_slots_visibility() {
 
 void EditorNode::_update_top_menu_visibility() {
 	if (distraction_free_mode) {
-		play_cc->hide();
+		//play_cc->hide();
 		menu_hb->hide();
 		scene_tabs->hide();
 	} else {
-		play_cc->show();
+		//play_cc->show();
 		menu_hb->show();
 		scene_tabs->show();
 	}
@@ -5134,6 +5134,8 @@ EditorNode::EditorNode() {
 	docks_visible = true;
 	distraction_free_mode = false;
 
+	const float top_spacing = 5;
+
 	FileAccess::set_backup_save(true);
 
 	PathRemap::get_singleton()->clear_remaps(); //editor uses no remaps
@@ -5500,9 +5502,9 @@ EditorNode::EditorNode() {
 	p->add_child(recent_scenes);
 	recent_scenes->connect("item_pressed", this, "_open_recent_scene");
 
-	{
+	if (top_spacing > 0) {
 		Control *sp = memnew(Control);
-		sp->set_custom_minimum_size(Size2(30, 0) * EDSCALE);
+		sp->set_custom_minimum_size(Size2(top_spacing, 0) * EDSCALE);
 		menu_hb->add_child(sp);
 	}
 
@@ -5571,21 +5573,51 @@ EditorNode::EditorNode() {
 
 	menu_hb->add_spacer();
 
+	progress_hb = memnew(BackgroundProgress);
+	menu_hb->add_child(progress_hb);
+
+	if (top_spacing > 0) {
+		Control *sp = memnew(Control);
+		sp->set_custom_minimum_size(Size2(top_spacing, 0) * EDSCALE);
+		menu_hb->add_child(sp);
+	}
+
+	//PanelContainer *vu_cont = memnew(PanelContainer);
+	//vu_cont->add_style_override("panel", gui_base->get_stylebox("hover", "Button"));
+	//menu_hb->add_child(vu_cont);
+
+	//audio_vu = memnew(TextureProgress);
+	//CenterContainer *vu_cc = memnew(CenterContainer);
+	//vu_cc->add_child(audio_vu);
+	//vu_cont->add_child(vu_cc);
+	//audio_vu->set_under_texture(gui_base->get_icon("VuEmpty", "EditorIcons"));
+	//audio_vu->set_progress_texture(gui_base->get_icon("VuFull", "EditorIcons"));
+	//audio_vu->set_max(24);
+	//audio_vu->set_min(-80);
+	//audio_vu->set_step(0.01);
+	//audio_vu->set_val(0);
+
+	if (top_spacing > 0) {
+		Control *sp = memnew(Control);
+		sp->set_custom_minimum_size(Size2(top_spacing, 0) * EDSCALE);
+		menu_hb->add_child(sp);
+	}
+
 	//Separator *s1 = memnew( VSeparator );
 	//menu_panel->add_child(s1);
 	//s1->set_pos(Point2(210,4));
 	//s1->set_size(Point2(10,15));
 
-	play_cc = memnew(CenterContainer);
-	play_cc->set_ignore_mouse(true);
-	gui_base->add_child(play_cc);
-	play_cc->set_area_as_parent_rect();
-	play_cc->set_anchor_and_margin(MARGIN_BOTTOM, Control::ANCHOR_BEGIN, 10);
-	play_cc->set_margin(MARGIN_TOP, 5);
+	//play_cc = memnew(CenterContainer);
+	//play_cc->set_ignore_mouse(true);
+	//gui_base->add_child(play_cc);
+	//play_cc->set_area_as_parent_rect();
+	//play_cc->set_anchor_and_margin(MARGIN_BOTTOM, Control::ANCHOR_BEGIN, 10);
+	//play_cc->set_margin(MARGIN_TOP, 5);
 
 	top_region = memnew(PanelContainer);
 	top_region->add_style_override("panel", gui_base->get_stylebox("hover", "Button"));
-	play_cc->add_child(top_region);
+	menu_hb->add_child(top_region);
 
 	HBoxContainer *play_hb = memnew(HBoxContainer);
 	top_region->add_child(play_hb);
@@ -5677,6 +5709,12 @@ EditorNode::EditorNode() {
 	p->set_item_tooltip(p->get_item_count() - 1, TTR("When this option is turned on, any script that is saved will be reloaded on the running game.\nWhen used remotely on a device, this is more efficient with network filesystem."));
 	p->connect("item_pressed", this, "_menu_option");
 
+	if (top_spacing > 0) {
+		Control *sp = memnew(Control);
+		sp->set_custom_minimum_size(Size2(top_spacing, 0) * EDSCALE);
+		menu_hb->add_child(sp);
+	}
+
 	/*
 	run_settings_button = memnew( ToolButton );
 	//menu_hb->add_child(run_settings_button);
@@ -5694,36 +5732,6 @@ EditorNode::EditorNode() {
 	run_settings_button->set_icon(gui_base->get_icon("Run","EditorIcons"));
 	run_settings_button->connect("pressed", this,"_menu_option",make_binds(RUN_SETTINGS));
 */
-
-	progress_hb = memnew(BackgroundProgress);
-	menu_hb->add_child(progress_hb);
-
-	{
-		Control *sp = memnew(Control);
-		sp->set_custom_minimum_size(Size2(30, 0) * EDSCALE);
-		menu_hb->add_child(sp);
-	}
-
-	PanelContainer *vu_cont = memnew(PanelContainer);
-	vu_cont->add_style_override("panel", gui_base->get_stylebox("hover", "Button"));
-	menu_hb->add_child(vu_cont);
-
-	audio_vu = memnew(TextureProgress);
-	CenterContainer *vu_cc = memnew(CenterContainer);
-	vu_cc->add_child(audio_vu);
-	vu_cont->add_child(vu_cc);
-	audio_vu->set_under_texture(gui_base->get_icon("VuEmpty", "EditorIcons"));
-	audio_vu->set_progress_texture(gui_base->get_icon("VuFull", "EditorIcons"));
-	audio_vu->set_max(24);
-	audio_vu->set_min(-80);
-	audio_vu->set_step(0.01);
-	audio_vu->set_val(0);
-
-	{
-		Control *sp = memnew(Control);
-		sp->set_custom_minimum_size(Size2(30, 0) * EDSCALE);
-		menu_hb->add_child(sp);
-	}
 
 	top_region = memnew(PanelContainer);
 	top_region->add_style_override("panel", gui_base->get_stylebox("hover", "Button"));
