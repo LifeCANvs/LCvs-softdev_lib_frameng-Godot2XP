@@ -6578,7 +6578,9 @@ void RasterizerGLES1::init() {
 
 void RasterizerGLES1::finish() {
 
-	memdelete(skinned_buffer);
+	// causes crash, incorrect function?
+	// let's try memdelete -> memdelete_arr
+	memdelete_arr(skinned_buffer);
 }
 
 int RasterizerGLES1::get_render_info(VS::RenderInfo p_info) {
