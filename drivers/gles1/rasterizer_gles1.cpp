@@ -1328,7 +1328,7 @@ VS::FixedMaterialTexCoordMode RasterizerGLES1::fixed_material_get_texcoord_mode(
 	return m->texcoord_mode[p_parameter]; // for now
 }
 
-void RasterizerGLES1::fixed_material_set_uv_transform(RID p_material,const Transform& p_transform) {
+void RasterizerGLES1::fixed_material_set_uv_transform(RID p_material, const Transform& p_transform) {
 
 	Material *m=material_owner.get( p_material );
 	ERR_FAIL_COND(!m);
@@ -3443,7 +3443,6 @@ void RasterizerGLES1::_setup_material(const Geometry *p_geometry,const Material 
 
 	if (!shadow) {
 
-
 		if (blend_mode!=p_material->blend_mode) {
 			switch(p_material->blend_mode) {
 
@@ -3478,20 +3477,48 @@ void RasterizerGLES1::_setup_material(const Geometry *p_geometry,const Material 
 				
 				
 			}
+
 			blend_mode=p_material->blend_mode;
 		}
-		
-		if (texcoord_mode!=p_material->texcoord_mode[0]) {
-			switch(p_material->texcoord_mode[0]) {
-				
-				case VS::FIXED_MATERIAL_TEXCOORD_UV: {
-					
+
+		int new_texcoord_mode = p_material->texcoord_mode[0];
+
+		// always update uv transform since it might be different
+		if (texcoord_mode != new_texcoord_mode || new_texcoord_mode == VS::FIXED_MATERIAL_TEXCOORD_UV_TRANSFORM) {
+
+			// reset uv transform based on current texcoord mode
+			switch (texcoord_mode) {
+
+				case VS::FIXED_MATERIAL_TEXCOORD_UV_TRANSFORM: {
+
+						// only need to reset this if it's not already UV TRANSFORM
+						if (texcoord_mode != new_texcoord_mode) {
+							glMatrixMode(GL_TEXTURE);
+							glLoadIdentity();
+							glMatrixMode(GL_MODELVIEW);
+						}
+				} break;
+
+				case VS::FIXED_MATERIAL_TEXCOORD_SPHERE: {
+
 						glDisable(GL_TEXTURE_GEN_S);
 						glDisable(GL_TEXTURE_GEN_T);
 				} break;
+			}
+
+			// apply new mode
+			switch(p_material->texcoord_mode[0]) {
+
+				case VS::FIXED_MATERIAL_TEXCOORD_UV_TRANSFORM: {
+
+						// load in material uv transform
+						glMatrixMode(GL_TEXTURE);
+						_gl_load_transform(p_material->uv_transform);
+						glMatrixMode(GL_MODELVIEW);
+				} break;
 				
 				case VS::FIXED_MATERIAL_TEXCOORD_SPHERE: {
-					
+
 					    glTexGeni(GL_S,GL_TEXTURE_GEN_MODE,GL_SPHERE_MAP);
 						glTexGeni(GL_T,GL_TEXTURE_GEN_MODE,GL_SPHERE_MAP);
 
@@ -3499,6 +3526,7 @@ void RasterizerGLES1::_setup_material(const Geometry *p_geometry,const Material 
 						glEnable(GL_TEXTURE_GEN_T);
 				} break;
 			}
+
 			texcoord_mode=p_material->texcoord_mode[0];
 		}
 
@@ -3508,6 +3536,7 @@ void RasterizerGLES1::_setup_material(const Geometry *p_geometry,const Material 
 			} else {
 				glEnable(GL_LIGHTING);
 			}
+
 			lighting=!p_material->flags[VS::MATERIAL_FLAG_UNSHADED];
 		}
 
@@ -4389,7 +4418,6 @@ void RasterizerGLES1::_render_list_forward(RenderList *p_render_list,bool p_reve
 		glPopMatrix();
 		glPushMatrix();
 
-
 		if (e->instance->billboard || e->instance->depth_scale) {
 
 			Transform xf=e->instance->transform;
@@ -4429,8 +4457,6 @@ void RasterizerGLES1::_render_list_forward(RenderList *p_render_list,bool p_reve
 
 		_render(geometry, material, skeleton,e->owner);
 
-
-
 		prev_material=material;
 		prev_skeleton=skeleton;
 		prev_geometry=geometry;
@@ -4438,9 +4464,6 @@ void RasterizerGLES1::_render_list_forward(RenderList *p_render_list,bool p_reve
 		prev_light_count=e->light_count;
 		prev_geometry_type=geometry->type;
 	}
-
-
-
 };
 
 
@@ -4594,6 +4617,10 @@ void RasterizerGLES1::end_scene() {
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(&camera_projection.matrix[0][0]);
+
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity();
+
 	//modelview (fixedpipie)
 	glMatrixMode(GL_MODELVIEW);
 	_gl_load_transform(camera_transform_inverse);
@@ -4602,6 +4629,7 @@ void RasterizerGLES1::end_scene() {
 	glDisable(GL_BLEND);
 
 	blend_mode=VS::MATERIAL_BLEND_MODE_MIX;
+	texcoord_mode = VS::FIXED_MATERIAL_TEXCOORD_UV;
 	lighting=true;
 	glEnable(GL_LIGHTING);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -4627,6 +4655,20 @@ void RasterizerGLES1::end_scene() {
 
 	_render_list_forward(&alpha_render_list);
 
+	// reset texture matrix
+	if (texcoord_mode == VS::FIXED_MATERIAL_TEXCOORD_UV_TRANSFORM) {
+		glMatrixMode(GL_TEXTURE);
+		glLoadIdentity();
+		glMatrixMode(GL_MODELVIEW);
+	}
+
+	// reset spheremap
+	if (texcoord_mode == VS::FIXED_MATERIAL_TEXCOORD_SPHERE) {
+		glDisable(GL_TEXTURE_GEN_S);
+		glDisable(GL_TEXTURE_GEN_T);
+	}
+
+	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
 
 	// disable fog again
