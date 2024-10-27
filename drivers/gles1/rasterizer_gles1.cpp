@@ -4874,10 +4874,10 @@ void RasterizerGLES1::end_frame() {
 
 void RasterizerGLES1::reset_state() {
 
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0); //unbind
 	glBindBuffer(GL_ARRAY_BUFFER,0);
 
+	glDisableClientState(GL_VERTEX_ARRAY);
 	glActiveTexture(GL_TEXTURE0);
 	glClientActiveTexture(GL_TEXTURE0);
 
