@@ -802,6 +802,8 @@ Ref<Texture> EditorMeshPreviewPlugin::generate(const RES &p_from) {
 		timeout--;
 	}
 
+	ERR_FAIL_COND_V(img.empty(), Ref<Texture>());
+
 	//print_line("captured!");
 	VS::get_singleton()->instance_set_base(mesh_instance, RID());
 
