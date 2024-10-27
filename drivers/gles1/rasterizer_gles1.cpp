@@ -1259,7 +1259,7 @@ void RasterizerGLES1::fixed_material_set_flag(RID p_material, VS::FixedMaterialF
 
 	Material *m=material_owner.get( p_material );
 	ERR_FAIL_COND(!m);
-	ERR_FAIL_INDEX(p_flag, 3);
+	ERR_FAIL_INDEX(p_flag, VS::FIXED_MATERIAL_FLAG_MAX); // was 3
 	m->fixed_flags[p_flag]=p_enabled;
 }
 
