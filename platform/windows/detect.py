@@ -245,7 +245,10 @@ def configure(env):
 
         env.Append(CCFLAGS=['/DGLES2_ENABLED'])
         env.Append(CCFLAGS=['/DGLES1_ENABLED'])
-
+		
+		# "temporary" until workaround for InterlockedCompareExchange64 missing on XP shows up
+        env.Append(CCFLAGS=['/DNO_THREADS'])
+		
         LIBS = ['winmm', 'opengl32', 'dsound', 'kernel32', 'ole32', 'oleaut32', 'user32', 'gdi32', 'IPHLPAPI', 'Shlwapi', 'wsock32', 'ws2_32', 'shell32', 'advapi32', 'dinput8', 'dxguid']
         env.Append(LINKFLAGS=[p + env["LIBSUFFIX"] for p in LIBS])
 

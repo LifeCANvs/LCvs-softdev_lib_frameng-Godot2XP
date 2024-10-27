@@ -30,7 +30,7 @@
 
 #include "typedefs.h"
 
-#if (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__) > 40100
+#if (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__) > 40100 && !defined(NO_THREADS)
 
 void baked_light_baker_add_64f(double *dst, double value) {
 
@@ -55,7 +55,7 @@ void baked_light_baker_add_64i(int64_t *dst, int64_t value) {
 	}
 }
 
-#elif defined(WINDOWS_ENABLED)
+#elif defined(WINDOWS_ENABLED) && !defined(NO_THREADS)
 
 #include "windows.h"
 
@@ -90,8 +90,9 @@ void baked_light_baker_add_64i(int64_t *dst, int64_t value) {
 
 #else
 
+// MSVC shits itself :/
 //in goder (the god of programmers) we trust
-#warning seems this platform or compiler does not support safe cmpxchg, your baked lighting may be funny
+//#warning seems this platform or compiler does not support safe cmpxchg, your baked lighting may be funny
 
 void baked_light_baker_add_64f(double *dst, double value) {
 
