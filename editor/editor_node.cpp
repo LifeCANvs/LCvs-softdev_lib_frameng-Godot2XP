@@ -5586,6 +5586,7 @@ EditorNode::EditorNode() {
 	//vu_cont->add_style_override("panel", gui_base->get_stylebox("hover", "Button"));
 	//menu_hb->add_child(vu_cont);
 
+	audio_vu = NULL;
 	//audio_vu = memnew(TextureProgress);
 	//CenterContainer *vu_cc = memnew(CenterContainer);
 	//vu_cc->add_child(audio_vu);
