@@ -4878,6 +4878,9 @@ void RasterizerGLES1::reset_state() {
 	glBindBuffer(GL_ARRAY_BUFFER,0);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
 	glActiveTexture(GL_TEXTURE0);
 	glClientActiveTexture(GL_TEXTURE0);
 
