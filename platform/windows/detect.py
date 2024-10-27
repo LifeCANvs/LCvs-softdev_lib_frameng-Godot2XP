@@ -239,7 +239,7 @@ def configure(env):
         env.Append(CCFLAGS=['/I' + os.getenv("WindowsSdkDir") + "/Include"])
         env.Append(CCFLAGS=['/DWINDOWS_ENABLED'])
         env.Append(CCFLAGS=['/DRTAUDIO_ENABLED'])
-        env.Append(CCFLAGS=['/DWASAPI_ENABLED'])
+        #env.Append(CCFLAGS=['/DWASAPI_ENABLED']) # API doesn't exist on Windows XP
         env.Append(CCFLAGS=['/DWIN32'])
         env.Append(CCFLAGS=['/DTYPED_METHOD_BIND'])
 
