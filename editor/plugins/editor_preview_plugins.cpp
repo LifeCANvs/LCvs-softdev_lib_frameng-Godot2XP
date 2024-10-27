@@ -248,6 +248,9 @@ Ref<Texture> EditorMaterialPreviewPlugin::generate(const RES &p_from) {
 		timeout--;
 	}
 
+	// couldn't get viewport screen capture
+	ERR_FAIL_COND_V(img.empty(), Ref<Texture>());
+
 	//print_line("captured!");
 	VS::get_singleton()->mesh_surface_set_material(sphere, 0, RID());
 
