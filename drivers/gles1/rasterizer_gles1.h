@@ -174,16 +174,17 @@ class RasterizerGLES1 : public Rasterizer {
 
 		Material() {
 
-
+			// Mistakenly used flags instead of fixed_flags?
 			for(int i=0;i<VS::FIXED_MATERIAL_FLAG_MAX;i++)
-				flags[i]=false;
+				fixed_flags[i]=false;
 
 			for(int i=0;i<VS::MATERIAL_FLAG_MAX;i++)
 				flags[i]=false;
+
 			flags[VS::MATERIAL_FLAG_VISIBLE]=true;
 
-			parameters[VS::FIXED_MATERIAL_PARAM_DIFFUSE] = Color(0.8, 0.8, 0.8);
-			parameters[VS::FIXED_MATERIAL_PARAM_SPECULAR_EXP] = 12;
+			parameters[VS::FIXED_MATERIAL_PARAM_DIFFUSE] = Color(1, 1, 1); // 0.8 -> 1.0
+			parameters[VS::FIXED_MATERIAL_PARAM_SPECULAR_EXP] = 40; // 12 -> 40 to match FixedMaterial resource
 
 			for (int i=0; i<VisualServer::FIXED_MATERIAL_PARAM_MAX; i++) {
 				texcoord_mode[i] = VS::FIXED_MATERIAL_TEXCOORD_UV;
