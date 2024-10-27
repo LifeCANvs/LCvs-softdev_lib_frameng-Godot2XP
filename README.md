@@ -18,7 +18,8 @@ If you try loading a GD2 project in this, it might not look correct without twea
 
 You shouldn't. This fork isn't intended to replace modern Godot versions.
 If you're looking to make a retro style video game, you can probably do that just fine with any newer engine.
-If you're the retro PC enthusiast type that's willing to put up with an old version of Godot despite its quirks, this version might be fine for you.
+If you're the retro PC enthusiast type that's willing to put up with an old version of Godot despite its quirks, 
+because you want your game to run on hardware it looks like it should, this version might be fine for you.
 
 #### Important Notes
 
