@@ -4990,8 +4990,11 @@ void RasterizerGLES1::canvas_begin_rect(const Matrix32& p_transform) {
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glScalef(2.0 / viewport.width, -2.0 / viewport.height, 0);
-	glTranslatef((-(viewport.width / 2.0)), (-(viewport.height / 2.0)), 0);
+	//glScalef(2.0 / viewport.width, -2.0 / viewport.height, 0);
+	//glTranslatef((-(viewport.width / 2.0)), (-(viewport.height / 2.0)), 0);
+	//_gl_mult_transform(p_transform);
+
+	// don't need to do anything here?
 	_gl_mult_transform(p_transform);
 
 	glPushMatrix();
