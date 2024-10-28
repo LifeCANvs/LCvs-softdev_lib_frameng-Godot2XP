@@ -3343,8 +3343,7 @@ void RasterizerGLES1::_set_cull(bool p_front,bool p_reverse_cull) {
 
 void RasterizerGLES1::_setup_fixed_material(const Geometry *p_geometry,const Material *p_material) {
 
-	// skip setting parameters for unshaded materials
-	if (!shadow && !p_material->flags[VS::MATERIAL_FLAG_UNSHADED]) {
+	if (!shadow) {
 
 		GLenum side = p_material->flags[VS::MATERIAL_FLAG_DOUBLE_SIDED] ? GL_FRONT_AND_BACK : GL_FRONT;
 
