@@ -4339,7 +4339,7 @@ void RasterizerGLES1::_render(const Geometry *p_geometry,const Material *p_mater
 				return;
 			}
 
-			//glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 			for (const List<Immediate::Chunk>::Element *E = im->chunks.front(); E; E = E->next()) {
 
