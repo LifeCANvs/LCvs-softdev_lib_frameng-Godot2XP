@@ -33,6 +33,7 @@ because you want your game to run on hardware it looks like it should, this vers
   material features like Emission will add color to the mesh vertices rather than the result of a texture to the surface.
   The GLES2 renderer allows you to select textures for features like specular/bump/emission, but in the GLES1 renderer
   these are treated as vertex lighting modifiers.
+- ShaderMaterials and Shaders do not work AT ALL. This will require OpenGL extensions to support.
 - NO_THREADING is defined as there is no InterlockedCompareExchange64 function on NT 5.1 (Windows XP 32-bit).
   I don't know the full concequences of this but things seem to work fine, so, /shrug
   This also means light baking may be broken.
