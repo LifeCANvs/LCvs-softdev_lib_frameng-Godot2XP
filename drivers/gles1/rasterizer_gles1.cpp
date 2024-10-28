@@ -1344,6 +1344,22 @@ Transform RasterizerGLES1::fixed_material_get_uv_transform(RID p_material) const
 	return m->uv_transform;
 }
 
+void RasterizerGLES1::fixed_material_set_light_shader(RID p_material, VS::FixedMaterialLightShader p_shader) {
+
+	Material *m = material_owner.get(p_material);
+	ERR_FAIL_COND(!m);
+
+	m->light_shader = p_shader;
+}
+
+VS::FixedMaterialLightShader RasterizerGLES1::fixed_material_get_light_shader(RID p_material) const {
+
+	Material *m = material_owner.get(p_material);
+	ERR_FAIL_COND_V(!m, VS::FIXED_MATERIAL_LIGHT_SHADER_LAMBERT);
+
+	return m->light_shader;
+}
+
 void RasterizerGLES1::fixed_material_set_point_size(RID p_material,float p_size) {
 
 	Material *m=material_owner.get( p_material );
@@ -3436,7 +3452,7 @@ void RasterizerGLES1::_setup_fixed_material(const Geometry *p_geometry,const Mat
 
 		GLenum side = p_material->flags[VS::MATERIAL_FLAG_DOUBLE_SIDED] ? GL_FRONT_AND_BACK : GL_FRONT;
 
-		///diffuse
+		//diffuse
 		Color diffuse_color=p_material->parameters[VS::FIXED_MATERIAL_PARAM_DIFFUSE];
 		float diffuse_rgba[4]={
 			diffuse_color.r,
@@ -3445,7 +3461,7 @@ void RasterizerGLES1::_setup_fixed_material(const Geometry *p_geometry,const Mat
 			   diffuse_color.a
 		};
 		
-		///ambient @TODO offer global ambient group option
+		//ambient @TODO offer global ambient group option
 		if (current_env && current_env->fx_enabled[VS::ENV_FX_AMBIENT_LIGHT]) {
 			Color ambcolor = current_env->fx_param[VS::ENV_FX_PARAM_AMBIENT_LIGHT_COLOR];
 			float ambnrg =  current_env->fx_param[VS::ENV_FX_PARAM_AMBIENT_LIGHT_ENERGY];
@@ -3462,13 +3478,11 @@ void RasterizerGLES1::_setup_fixed_material(const Geometry *p_geometry,const Mat
 			glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,ambient_color);
 		}
 
-		//color array overrides this
 		glColor4f( diffuse_rgba[0],diffuse_rgba[1],diffuse_rgba[2],diffuse_rgba[3]);
 		last_color=diffuse_color;
-		//glMaterialfv(side,GL_AMBIENT,diffuse_rgba); // why?
 		glMaterialfv(side,GL_DIFFUSE,diffuse_rgba);
-		//specular
 
+		//specular
 		const Color specular_color=p_material->parameters[VS::FIXED_MATERIAL_PARAM_SPECULAR];
 		float specular_rgba[4]={
 			specular_color.r,
@@ -3479,9 +3493,8 @@ void RasterizerGLES1::_setup_fixed_material(const Geometry *p_geometry,const Mat
 
 		glMaterialfv(side,GL_SPECULAR,specular_rgba);
 
+		// emission
 		const Color emission=p_material->parameters[VS::FIXED_MATERIAL_PARAM_EMISSION];
-
-
 		float emission_rgba[4]={
 			emission.r,
 			emission.g,
@@ -3491,12 +3504,11 @@ void RasterizerGLES1::_setup_fixed_material(const Geometry *p_geometry,const Mat
 
 		glMaterialfv(side,GL_EMISSION,emission_rgba);
 
+		// specular exponent
 		glMaterialf(side,GL_SHININESS,p_material->parameters[VS::FIXED_MATERIAL_PARAM_SPECULAR_EXP]);
 
-		Plane sparams=p_material->parameters[VS::FIXED_MATERIAL_PARAM_SHADE_PARAM];
-		//depth test?
-
-
+		// ?
+		//Plane sparams=p_material->parameters[VS::FIXED_MATERIAL_PARAM_SHADE_PARAM];
 	}
 
 
@@ -6791,6 +6803,7 @@ void RasterizerGLES1::init() {
 	glDepthFunc(GL_LEQUAL);
 	glFrontFace(GL_CW);
 	//glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_COLOR_MATERIAL);
 
 	default_material=create_default_material();
 

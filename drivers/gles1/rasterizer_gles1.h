@@ -158,6 +158,8 @@ class RasterizerGLES1 : public Rasterizer {
 		VS::MaterialDepthDrawMode depth_draw_mode;
 
 		Transform uv_transform;
+		// Not used
+		VS::FixedMaterialLightShader light_shader;
 		VS::FixedMaterialTexCoordMode texcoord_mode[VisualServer::FIXED_MATERIAL_PARAM_MAX];
 
 		VS::MaterialBlendMode blend_mode;
@@ -184,7 +186,15 @@ class RasterizerGLES1 : public Rasterizer {
 			flags[VS::MATERIAL_FLAG_VISIBLE]=true;
 
 			parameters[VS::FIXED_MATERIAL_PARAM_DIFFUSE] = Color(1, 1, 1); // 0.8 -> 1.0
+			parameters[VS::FIXED_MATERIAL_PARAM_DETAIL] = 1.0;
+			parameters[VS::FIXED_MATERIAL_PARAM_EMISSION] = Color(0, 0, 0);
+			parameters[VS::FIXED_MATERIAL_PARAM_GLOW] = 0;
+			parameters[VS::FIXED_MATERIAL_PARAM_SHADE_PARAM] = 0.5; // Changed to 0.5 to match FixedMaterial resource.
+			parameters[VS::FIXED_MATERIAL_PARAM_SPECULAR] = Color(0.0, 0.0, 0.0);
 			parameters[VS::FIXED_MATERIAL_PARAM_SPECULAR_EXP] = 40; // 12 -> 40 to match FixedMaterial resource
+			parameters[VS::FIXED_MATERIAL_PARAM_NORMAL] = 1;
+
+			light_shader = VS::FIXED_MATERIAL_LIGHT_SHADER_LAMBERT;
 
 			for (int i=0; i<VisualServer::FIXED_MATERIAL_PARAM_MAX; i++) {
 				texcoord_mode[i] = VS::FIXED_MATERIAL_TEXCOORD_UV;
@@ -992,6 +1002,9 @@ public:
 
 	virtual void fixed_material_set_uv_transform(RID p_material,const Transform& p_transform);
 	virtual Transform fixed_material_get_uv_transform(RID p_material) const;
+
+	virtual void fixed_material_set_light_shader(RID p_material, VS::FixedMaterialLightShader p_shader);
+	virtual VS::FixedMaterialLightShader fixed_material_get_light_shader(RID p_material) const;
 
 	virtual void fixed_material_set_point_size(RID p_material,float p_size);
 	virtual float fixed_material_get_point_size(RID p_material) const;
