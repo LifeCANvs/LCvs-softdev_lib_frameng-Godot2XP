@@ -5160,11 +5160,6 @@ void RasterizerGLES1::reset_state() {
 	glLineWidth(1.0);
 	glDisable(GL_LIGHTING);
 	
-	// need to reset this, otherwise it forgets when texture gen is disabled
-	texcoord_mode=0;
-	glDisable(GL_TEXTURE_GEN_S);
-	glDisable(GL_TEXTURE_GEN_T);
-	
 	// turn off fog
 	glDisable(GL_FOG);
 }
@@ -5299,7 +5294,7 @@ void RasterizerGLES1::canvas_draw_line(const Point2& p_from, const Point2& p_to,
 
 }
 
-static void _draw_textured_quad(const Rect2& p_rect, const Rect2& p_src_region, const Size2& p_tex_size,bool p_flip_h=false,bool p_flip_v=false ) {
+static void _draw_textured_quad(const Rect2& p_rect, const Rect2& p_src_region, const Size2& p_tex_size,bool p_flip_h=false,bool p_flip_v=false, bool p_transpose = false) {
 
 
 	Vector3 texcoords[4]= {
@@ -5316,7 +5311,9 @@ static void _draw_textured_quad(const Rect2& p_rect, const Rect2& p_src_region, 
 		(p_src_region.pos.y+p_src_region.size.height)/p_tex_size.height, 0)
 	};
 
-
+	if (p_transpose) {
+		SWAP(texcoords[1], texcoords[3]);
+	}
 	if (p_flip_h) {
 		SWAP( texcoords[0], texcoords[1] );
 		SWAP( texcoords[2], texcoords[3] );
@@ -5373,11 +5370,11 @@ void RasterizerGLES1::canvas_draw_rect(const Rect2& p_rect, int p_flags, const R
 		if (!(p_flags&CANVAS_RECT_REGION)) {
 
 			Rect2 region = Rect2(0,0,texture->width,texture->height);
-			_draw_textured_quad(p_rect,region,region.size,p_flags&CANVAS_RECT_FLIP_H,p_flags&CANVAS_RECT_FLIP_V);
+			_draw_textured_quad(p_rect,region,region.size,p_flags&CANVAS_RECT_FLIP_H,p_flags&CANVAS_RECT_FLIP_V, p_flags & CANVAS_RECT_TRANSPOSE);
 
 		} else {
 
-			_draw_textured_quad(p_rect, p_source, Size2(texture->width,texture->height),p_flags&CANVAS_RECT_FLIP_H,p_flags&CANVAS_RECT_FLIP_V );
+			_draw_textured_quad(p_rect, p_source, Size2(texture->width,texture->height),p_flags&CANVAS_RECT_FLIP_H,p_flags&CANVAS_RECT_FLIP_V, p_flags & CANVAS_RECT_TRANSPOSE);
 		}
 
 		if (untile) {
@@ -5757,6 +5754,8 @@ void RasterizerGLES1::canvas_render_items(CanvasItem *p_item_list, int p_z, cons
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		_gl_mult_transform(ci->final_transform);
+		// for extra transform matrix
+		glPushMatrix();
 
 		bool reclip = false;
 
@@ -5798,6 +5797,8 @@ void RasterizerGLES1::canvas_render_items(CanvasItem *p_item_list, int p_z, cons
 
 		if (unshaded || (p_modulate.a > 0.001 && (!material || material->shading_mode != VS::CANVAS_ITEM_SHADING_ONLY_LIGHT) && !ci->light_masked))
 			_canvas_item_render_commands<false>(ci, current_clip, reclip);
+
+		glPopMatrix();
 
 		if (canvas_blend == VS::MATERIAL_BLEND_MODE_MIX && p_light && !unshaded) {
 
