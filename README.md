@@ -27,16 +27,25 @@ because you want your game to run on hardware it looks like it should, this vers
 - Some of the editor GUI is modified to be more usable on low-res screens.
 - The current OpenGL 1.x compatible renderer is labled as the GLES1 renderer as that was the name inherited from Godot 1.0.
   This name is potentially misleading since I am targeting the regular OpenGL spec.
+- Some of the functions used in the renderer suggest a minimum OpenGL version of 1.5.
+  Buffer objects (1.5) and multitexturing features (1.3) are used.
+  I might add a way for the engine to detect if these features are available so it can run on lower versions.
+- NO_THREADING is defined as there is no InterlockedCompareExchange64 function on NT 5.1 (Windows XP 32-bit).
+  I don't know the full concequences of this but things seem to work fine, so, /shrug.
+  This also means light baking may be broken.
+
+#### GLES1 Known limitations
+
+- Viewports do not render correctly in the editor, and escape the main viewport.
+  The engine expects the editor viewport to use a framebuffer object, but FBOs are not implemented for the GLES1 renderer at the moment.
+- Texture/cubemap environment background does not work.
 - Not all FixedMaterial features work. FixedMaterials can only render using one texture at a time
   as their material properties are fed to the OpenGL fixed function lighting material system.
   This causes differences in rendering. Since the fixed-function pipeline lighting is vertex-based,
   material features like Emission will add color to the mesh vertices rather than the result of a texture to the surface.
   The GLES2 renderer allows you to select textures for features like specular/bump/emission, but in the GLES1 renderer
   these are treated as vertex lighting modifiers.
-- ShaderMaterials and Shaders do not work AT ALL. This will require OpenGL extensions to support.
-- NO_THREADING is defined as there is no InterlockedCompareExchange64 function on NT 5.1 (Windows XP 32-bit).
-  I don't know the full concequences of this but things seem to work fine, so, /shrug
-  This also means light baking may be broken.
+- ShaderMaterials and Shaders do not work AT ALL. This would require OpenGL extensions to support.
 
 ## Original README
 
