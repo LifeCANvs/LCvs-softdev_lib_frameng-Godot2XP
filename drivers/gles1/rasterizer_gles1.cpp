@@ -4440,7 +4440,14 @@ void RasterizerGLES1::_render_list_forward(RenderList *p_render_list,bool p_reve
 			if (e->instance->billboard) {
 
 				Vector3 scale = xf.basis.get_scale();
-				xf.set_look_at(xf.origin,xf.origin+camera_transform.get_basis().get_axis(2),camera_transform.get_basis().get_axis(1));
+				Vector3 target = xf.origin - camera_transform.get_basis().get_axis(2);
+				// target Y position will be the same as the origin, so it will only rotate vertically.
+				if (e->instance->billboard_y) {
+					target.y = xf.origin.y;
+				}
+
+				xf.set_look_at(xf.origin, target, camera_transform.get_basis().get_axis(1));
+
 				xf.basis.scale(scale);
 			}
 			_gl_mult_transform(xf); // for fixed pipeline

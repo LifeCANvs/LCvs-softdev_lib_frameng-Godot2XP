@@ -5768,21 +5768,24 @@ void RasterizerGLES2::_render(const Geometry *p_geometry, const Material *p_mate
 				if (c.vertices.empty()) {
 					continue;
 				}
-				for (int i = 0; i < c.vertices.size(); i++)
 
-					if (c.texture.is_valid() && texture_owner.owns(c.texture)) {
+				// what on earth?
+				//for (int i = 0; i < c.vertices.size(); i++)
 
-						const Texture *t = texture_owner.get(c.texture);
-						glActiveTexture(GL_TEXTURE0 + tc0_idx);
-						glBindTexture(t->target, t->tex_id);
-						restore_tex = true;
+				if (c.texture.is_valid() && texture_owner.owns(c.texture)) {
 
-					} else if (restore_tex) {
+					const Texture *t = texture_owner.get(c.texture);
+					glActiveTexture(GL_TEXTURE0 + tc0_idx);
+					glBindTexture(t->target, t->tex_id);
+					restore_tex = true;
 
-						glActiveTexture(GL_TEXTURE0 + tc0_idx);
-						glBindTexture(GL_TEXTURE_2D, tc0_id_cache);
-						restore_tex = false;
-					}
+				}
+				else if (restore_tex) {
+
+					glActiveTexture(GL_TEXTURE0 + tc0_idx);
+					glBindTexture(GL_TEXTURE_2D, tc0_id_cache);
+					restore_tex = false;
+				}
 
 				if (!c.normals.empty()) {
 
@@ -6374,11 +6377,16 @@ void RasterizerGLES2::_render_list_forward(RenderList *p_render_list, const Tran
 			if (e->instance->billboard) {
 
 				Vector3 scale = xf.basis.get_scale();
+				Vector3 target = xf.origin - camera_transform.get_basis().get_axis(2);
+				// target Y position will be the same as the origin, so it will only rotate vertically.
+				if (e->instance->billboard_y) {
+					target.y = xf.origin.y;
+				}
 
 				if (current_rt && current_rt_vflip) {
-					xf.set_look_at(xf.origin, xf.origin + p_view_transform.get_basis().get_axis(2), -p_view_transform.get_basis().get_axis(1));
+					xf.set_look_at(xf.origin, target, -p_view_transform.get_basis().get_axis(1));
 				} else {
-					xf.set_look_at(xf.origin, xf.origin + p_view_transform.get_basis().get_axis(2), p_view_transform.get_basis().get_axis(1));
+					xf.set_look_at(xf.origin, target, p_view_transform.get_basis().get_axis(1));
 				}
 
 				xf.basis.scale(scale);
