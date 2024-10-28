@@ -4339,7 +4339,9 @@ void RasterizerGLES1::_render(const Geometry *p_geometry,const Material *p_mater
 				return;
 			}
 
+			// Not used for immediate, screws things up
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 			for (const List<Immediate::Chunk>::Element *E = im->chunks.front(); E; E = E->next()) {
 
@@ -4356,14 +4358,14 @@ void RasterizerGLES1::_render(const Geometry *p_geometry,const Material *p_mater
 					const Texture *t = texture_owner.get(c.texture);
 					// Texture2D should always be enabled
 					glEnable(GL_TEXTURE_2D);
-					glActiveTexture(GL_TEXTURE0 + tc0_idx);
+					glClientActiveTexture(GL_TEXTURE0 + tc0_idx);
 					glBindTexture(t->target, t->tex_id);
 					restore_tex = true;
 
 				}
 				else if (restore_tex) {
 
-					glActiveTexture(GL_TEXTURE0 + tc0_idx);
+					glClientActiveTexture(GL_TEXTURE0 + tc0_idx);
 					glBindTexture(GL_TEXTURE_2D, tc0_id_cache);
 					restore_tex = false;
 				}
@@ -4403,7 +4405,7 @@ void RasterizerGLES1::_render(const Geometry *p_geometry,const Material *p_mater
 
 			if (restore_tex) {
 
-				glActiveTexture(GL_TEXTURE0 + tc0_idx);
+				glClientActiveTexture(GL_TEXTURE0 + tc0_idx);
 				glBindTexture(GL_TEXTURE_2D, tc0_id_cache);
 				restore_tex = false;
 			}
