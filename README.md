@@ -1,3 +1,45 @@
+## Godot 2 XP - What is this?
+
+Godot 2 XP is a fork of Godot 2.1.7 RC that not only runs on Windows XP,
+but it implements a fixed-function OpenGL 1.x compatible rasterizer for lower tier PC GPUs.
+I made this because I have a crappy Windows XP computer that I like to tinker with.
+This functionality could be ported to other low-tier platforms, but I am only a Windows user.
+
+This version of Godot is not intended as a drop-in replacement for Godot 2 games, and is an enthusiast version made for my own purposes.
+I may add new features not present in the original Godot 2.1 version intended for my own use.
+
+#### Can I use this to load existing games?
+
+The GLES1 rasterizer ported from Godot 1.0 has fundamental differences from the GLES2 rasterizer.
+Existing games made for Godot 2 target the GLES2 renderer, but this fork uses the GLES1 renderer by default for compatibility reasons.
+If you try loading a GD2 project in this, it might not look correct without tweaking the video driver setting.
+
+#### Why should I use this over modern Godot?
+
+You shouldn't. This fork isn't intended to replace modern Godot versions.
+If you're looking to make a retro style video game, you can probably do that just fine with any newer engine.
+If you're the retro PC enthusiast type that's willing to put up with an old version of Godot despite its quirks, 
+because you want your game to run on hardware it looks like it should, this version might be fine for you.
+
+#### Important Notes
+
+- I compile this using Visual C++ Express 2010's toolset.
+- Some of the editor GUI is modified to be more usable on low-res screens.
+- The current OpenGL 1.x compatible renderer is labled as the GLES1 renderer as that was the name inherited from Godot 1.0.
+  This name is potentially misleading since I am targeting the regular OpenGL spec.
+- Not all FixedMaterial features work. FixedMaterials can only render using one texture at a time
+  as their material properties are fed to the OpenGL fixed function lighting material system.
+  This causes differences in rendering. Since the fixed-function pipeline lighting is vertex-based,
+  material features like Emission will add color to the mesh vertices rather than the result of a texture to the surface.
+  The GLES2 renderer allows you to select textures for features like specular/bump/emission, but in the GLES1 renderer
+  these are treated as vertex lighting modifiers.
+- ShaderMaterials and Shaders do not work AT ALL. This will require OpenGL extensions to support.
+- NO_THREADING is defined as there is no InterlockedCompareExchange64 function on NT 5.1 (Windows XP 32-bit).
+  I don't know the full concequences of this but things seem to work fine, so, /shrug
+  This also means light baking may be broken.
+
+## Original README
+
 [![GODOT](/logo.png)](https://godotengine.org)
 
 ## Godot Engine
