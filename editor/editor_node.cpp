@@ -116,6 +116,9 @@
 #include "plugins/editor_preview_plugins.h"
 #include "script_editor_debugger.h"
 
+// The metadata key used to store and retrieve the version text to copy to the clipboard.
+#define META_TEXT_TO_COPY "text_to_copy"
+
 EditorNode *EditorNode::singleton = NULL;
 
 void EditorNode::_update_scene_tabs() {
@@ -481,6 +484,10 @@ void EditorNode::_rebuild_import_menu() {
 	for (int i = 0; i < editor_import_export->get_import_plugin_count(); i++) {
 		p->add_item(editor_import_export->get_import_plugin(i)->get_visible_name(), IMPORT_PLUGIN_BASE + i);
 	}
+}
+
+void EditorNode::_version_button_pressed() {
+	OS::get_singleton()->set_clipboard(version_btn->get_meta(META_TEXT_TO_COPY));
 }
 
 void EditorNode::_node_renamed() {
@@ -4673,7 +4680,7 @@ ToolButton *EditorNode::add_bottom_panel_item(String p_text, Control *p_item) {
 	tb->set_focus_mode(Control::FOCUS_NONE);
 	bottom_panel_vb->add_child(p_item);
 	bottom_panel_hb->raise();
-	bottom_panel_hb->add_child(tb);
+	bottom_panel_hb_editors->add_child(tb);
 	p_item->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	p_item->hide();
 	BottomPanelItem bpi;
@@ -4737,7 +4744,7 @@ void EditorNode::remove_bottom_panel_item(Control *p_item) {
 				_bottom_panel_switch(false, 0);
 			}
 			bottom_panel_vb->remove_child(bottom_panel_items[i].control);
-			bottom_panel_hb->remove_child(bottom_panel_items[i].button);
+			bottom_panel_hb_editors->remove_child(bottom_panel_items[i].button);
 			memdelete(bottom_panel_items[i].button);
 			bottom_panel_items.remove(i);
 			break;
@@ -5025,6 +5032,7 @@ void EditorNode::_bind_methods() {
 	ObjectTypeDB::bind_method("_close_messages", &EditorNode::_close_messages);
 	ObjectTypeDB::bind_method("_show_messages", &EditorNode::_show_messages);
 	ObjectTypeDB::bind_method("_vp_resized", &EditorNode::_vp_resized);
+	ObjectTypeDB::bind_method("_version_button_pressed", &EditorNode::_version_button_pressed);
 	ObjectTypeDB::bind_method("_quick_opened", &EditorNode::_quick_opened);
 	ObjectTypeDB::bind_method("_quick_run", &EditorNode::_quick_run);
 
@@ -5995,6 +6003,38 @@ EditorNode::EditorNode() {
 
 	bottom_panel_hb = memnew(HBoxContainer);
 	bottom_panel_vb->add_child(bottom_panel_hb);
+
+	bottom_panel_hb_editors = memnew(HBoxContainer);
+	bottom_panel_hb_editors->set_h_size_flags(Control::SIZE_EXPAND_FILL);
+	bottom_panel_hb->add_child(bottom_panel_hb_editors);
+
+
+	VBoxContainer *version_info_vbc = memnew(VBoxContainer);
+	bottom_panel_hb->add_child(version_info_vbc);
+
+	// Add a dummy control node for vertical spacing.
+	Control *v_spacer = memnew(Control);
+	version_info_vbc->add_child(v_spacer);
+
+	version_btn = memnew(LinkButton);
+	version_btn->set_text(VERSION_MKSTRING);
+	//String hash = String(VERSION_HASH);
+	//if (hash.length() != 0) {
+	//	hash = " " + vformat("[%s]", hash.left(9));
+	//}
+	//// Set the text to copy in metadata as it slightly differs from the button's text.
+	version_btn->set_meta(META_TEXT_TO_COPY, "v" VERSION_FULL_NAME);
+	// Fade out the version label to be less prominent, but still readable
+	//version_btn->set_self_modulate(Color(1, 1, 1, 0.65));
+	version_btn->set_self_opacity(0.65);
+	version_btn->set_underline_mode(LinkButton::UNDERLINE_MODE_ON_HOVER);
+	version_btn->set_tooltip(TTR("Click to copy."));
+	version_btn->connect("pressed", this, "_version_button_pressed");
+	version_info_vbc->add_child(version_btn);
+
+	// Add a dummy control node for horizontal spacing.
+	Control *h_spacer = memnew(Control);
+	bottom_panel_hb->add_child(h_spacer);
 
 	log = memnew(EditorLog);
 

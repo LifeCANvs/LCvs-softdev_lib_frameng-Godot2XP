@@ -57,6 +57,7 @@
 #include "scene/gui/texture_progress.h"
 #include "scene/gui/tool_button.h"
 #include "scene/gui/tree.h"
+#include "scene/gui/link_button.h"
 
 #include "editor/pane_drag.h"
 
@@ -405,7 +406,9 @@ private:
 
 	PanelContainer *bottom_panel;
 	HBoxContainer *bottom_panel_hb;
+	HBoxContainer *bottom_panel_hb_editors;
 	VBoxContainer *bottom_panel_vb;
+	LinkButton *version_btn;
 
 	void _bottom_panel_switch(bool p_enable, int p_idx);
 
@@ -447,6 +450,7 @@ private:
 	void _close_messages();
 	void _show_messages();
 	void _vp_resized();
+	void _version_button_pressed();
 
 	void _rebuild_import_menu();
 
