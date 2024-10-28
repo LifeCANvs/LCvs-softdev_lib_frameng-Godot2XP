@@ -959,24 +959,28 @@ void RasterizerGLES2::texture_set_data(RID p_texture, const Image &p_image, VS::
 
 	texture->ignore_mipmaps = compressed && img.get_mipmaps() == 0;
 
-	if (texture->flags & VS::TEXTURE_FLAG_MIPMAPS && !texture->ignore_mipmaps)
-		glTexParameteri(texture->target, GL_TEXTURE_MIN_FILTER, use_fast_texture_filter ? GL_LINEAR_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR);
-	else {
-		if (texture->flags & VS::TEXTURE_FLAG_FILTER) {
-			glTexParameteri(texture->target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		} else {
-			glTexParameteri(texture->target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	bool has_mips = texture->flags & VS::TEXTURE_FLAG_MIPMAPS && !texture->ignore_mipmaps;
+	bool should_filter = texture->flags & VS::TEXTURE_FLAG_FILTER;
+
+	int min_filter, mag_filter;
+
+	if (has_mips) {
+		if (should_filter) {
+			min_filter = use_fast_texture_filter ? GL_LINEAR_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
+			mag_filter = GL_LINEAR;
+		}
+		else {
+			min_filter = use_fast_texture_filter ? GL_NEAREST_MIPMAP_NEAREST : GL_NEAREST_MIPMAP_LINEAR;
+			mag_filter = GL_NEAREST;
 		}
 	}
-
-	if (texture->flags & VS::TEXTURE_FLAG_FILTER) {
-
-		glTexParameteri(texture->target, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Linear Filtering
-
-	} else {
-
-		glTexParameteri(texture->target, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // raw Filtering
+	else {
+		min_filter = should_filter ? GL_LINEAR : GL_NEAREST;
+		mag_filter = should_filter ? GL_LINEAR : GL_NEAREST;
 	}
+
+	glTexParameteri(texture->target, GL_TEXTURE_MIN_FILTER, min_filter);
+	glTexParameteri(texture->target, GL_TEXTURE_MAG_FILTER, mag_filter);
 
 	bool force_clamp_to_edge = !(texture->flags & VS::TEXTURE_FLAG_MIPMAPS && !texture->ignore_mipmaps) && (next_power_of_2(texture->alloc_height) != texture->alloc_height || next_power_of_2(texture->alloc_width) != texture->alloc_width);
 
@@ -1262,28 +1266,28 @@ void RasterizerGLES2::texture_set_flags(RID p_texture, uint32_t p_flags) {
 		}
 	}
 
-	if (texture->flags & VS::TEXTURE_FLAG_MIPMAPS && !texture->ignore_mipmaps) {
-		if (!had_mipmaps && texture->mipmaps == 1) {
-			glGenerateMipmap(texture->target);
-		}
-		glTexParameteri(texture->target, GL_TEXTURE_MIN_FILTER, use_fast_texture_filter ? GL_LINEAR_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR);
+	bool has_mips = texture->flags & VS::TEXTURE_FLAG_MIPMAPS && !texture->ignore_mipmaps;
+	bool should_filter = texture->flags & VS::TEXTURE_FLAG_FILTER;
 
-	} else {
-		if (texture->flags & VS::TEXTURE_FLAG_FILTER) {
-			glTexParameteri(texture->target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		} else {
-			glTexParameteri(texture->target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	int min_filter, mag_filter;
+
+	if (has_mips) {
+		if (should_filter) {
+			min_filter = use_fast_texture_filter ? GL_LINEAR_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
+			mag_filter = GL_LINEAR;
+		}
+		else {
+			min_filter = use_fast_texture_filter ? GL_NEAREST_MIPMAP_NEAREST : GL_NEAREST_MIPMAP_LINEAR;
+			mag_filter = GL_NEAREST;
 		}
 	}
-
-	if (texture->flags & VS::TEXTURE_FLAG_FILTER) {
-
-		glTexParameteri(texture->target, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Linear Filtering
-
-	} else {
-
-		glTexParameteri(texture->target, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // raw Filtering
+	else {
+		min_filter = should_filter ? GL_LINEAR : GL_NEAREST;
+		mag_filter = should_filter ? GL_LINEAR : GL_NEAREST;
 	}
+
+	glTexParameteri(texture->target, GL_TEXTURE_MIN_FILTER, min_filter);
+	glTexParameteri(texture->target, GL_TEXTURE_MAG_FILTER, mag_filter);
 }
 uint32_t RasterizerGLES2::texture_get_flags(RID p_texture) const {
 

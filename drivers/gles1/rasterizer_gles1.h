@@ -94,6 +94,7 @@ class RasterizerGLES1 : public Rasterizer {
 		bool compressed;
 		bool disallow_mipmaps;
 		int total_data_size;
+		bool ignore_mipmaps;
 
 		Image image[6];
 
@@ -105,6 +106,7 @@ class RasterizerGLES1 : public Rasterizer {
 
 		Texture() {
 
+			ignore_mipmaps = false;
 			flags=width=height=0;
 			tex_id=0;
 			data_size=0;
@@ -602,6 +604,7 @@ class RasterizerGLES1 : public Rasterizer {
 	int light_instance_count;
 	int directional_light_count;
 	int last_light_id;
+	bool use_fast_texture_filter;
 
 
 	struct RenderList {
