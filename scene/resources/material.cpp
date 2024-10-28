@@ -358,8 +358,8 @@ void FixedMaterial::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::COLOR, "params/diffuse"), _SCS("set_parameter"), _SCS("get_parameter"), PARAM_DIFFUSE);
 	ADD_PROPERTYI(PropertyInfo(Variant::COLOR, "params/specular", PROPERTY_HINT_COLOR_NO_ALPHA), _SCS("set_parameter"), _SCS("get_parameter"), PARAM_SPECULAR);
 	ADD_PROPERTYI(PropertyInfo(Variant::COLOR, "params/emission", PROPERTY_HINT_COLOR_NO_ALPHA), _SCS("set_parameter"), _SCS("get_parameter"), PARAM_EMISSION);
-	// specular_exp max changed from 64 to 1024, 64 seemed incredibly tiny
-	ADD_PROPERTYI(PropertyInfo(Variant::REAL, "params/specular_exp", PROPERTY_HINT_RANGE, "1,1024,0.01"), _SCS("set_parameter"), _SCS("get_parameter"), PARAM_SPECULAR_EXP);
+	// specular_exp max changed from 64 to 128
+	ADD_PROPERTYI(PropertyInfo(Variant::REAL, "params/specular_exp", PROPERTY_HINT_RANGE, "1,128,0.01"), _SCS("set_parameter"), _SCS("get_parameter"), PARAM_SPECULAR_EXP);
 	ADD_PROPERTYI(PropertyInfo(Variant::REAL, "params/detail_mix", PROPERTY_HINT_RANGE, "0,1,0.01"), _SCS("set_parameter"), _SCS("get_parameter"), PARAM_DETAIL);
 	ADD_PROPERTYI(PropertyInfo(Variant::REAL, "params/normal_depth", PROPERTY_HINT_RANGE, "-4,4,0.01"), _SCS("set_parameter"), _SCS("get_parameter"), PARAM_NORMAL);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "params/shader", PROPERTY_HINT_ENUM, "Lambert,Wrap,Velvet,Toon"), _SCS("set_light_shader"), _SCS("get_light_shader"));
