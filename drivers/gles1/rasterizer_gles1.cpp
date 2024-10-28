@@ -3068,6 +3068,8 @@ bool RasterizerGLES1::render_target_renedered_in_frame(RID p_render_target){
 
 void RasterizerGLES1::begin_frame() {
 
+	glDepthFunc(GL_LEQUAL);
+	glFrontFace(GL_CW);
 
 	window_size = Size2( OS::get_singleton()->get_video_mode().width, OS::get_singleton()->get_video_mode().height );
 	//print_line("begin frame - winsize: "+window_size);
@@ -3258,8 +3260,12 @@ void RasterizerGLES1::_add_geometry( const Geometry* p_geometry, const InstanceD
 	int light_count=0;
 
 	RenderList *render_list=&opaque_render_list;
-	// should the blend mode really override "use alpha"?
-	if (m->fixed_flags[VS::FIXED_MATERIAL_FLAG_USE_ALPHA] || m->blend_mode!=VS::MATERIAL_BLEND_MODE_MIX) {
+
+	bool has_base_alpha = m->fixed_flags[VS::FIXED_MATERIAL_FLAG_USE_ALPHA];
+	bool has_blend_alpha = m->blend_mode != VS::MATERIAL_BLEND_MODE_MIX || m->flags[VS::MATERIAL_FLAG_ONTOP];
+	bool has_alpha = has_base_alpha || has_blend_alpha;
+
+	if (has_alpha) {
 		render_list = &alpha_render_list;
 	};
 
@@ -3505,7 +3511,7 @@ void RasterizerGLES1::_setup_fixed_material(const Geometry *p_geometry,const Mat
 
 }
 
-void RasterizerGLES1::_setup_material(const Geometry *p_geometry,const Material *p_material) {
+void RasterizerGLES1::_setup_material(const Geometry *p_geometry,const Material *p_material, bool p_opaque_pass) {
 
 	if (p_material->flags[VS::MATERIAL_FLAG_DOUBLE_SIDED])
 		glDisable(GL_CULL_FACE);
@@ -3621,12 +3627,12 @@ void RasterizerGLES1::_setup_material(const Geometry *p_geometry,const Material 
 		}
 
 	}
-	
-	bool current_depth_write=p_material->depth_draw_mode!=VS::MATERIAL_DEPTH_DRAW_ALWAYS; //broken
-	bool current_depth_test=!p_material->flags[VS::MATERIAL_FLAG_ONTOP];
 
+	_setup_fixed_material(p_geometry, p_material);
 
-	_setup_fixed_material(p_geometry,p_material);
+	bool current_depth_test = !p_material->flags[VS::MATERIAL_FLAG_ONTOP];
+	//bool current_depth_write=p_material->depth_draw_mode!=VS::MATERIAL_DEPTH_DRAW_ALWAYS; //broken
+	bool current_depth_write = p_material->depth_draw_mode != VS::MATERIAL_DEPTH_DRAW_NEVER && (p_opaque_pass || p_material->depth_draw_mode == VS::MATERIAL_DEPTH_DRAW_ALWAYS);
 
 	if (current_depth_write!=depth_write) {
 
@@ -4535,7 +4541,7 @@ void RasterizerGLES1::_setup_shader_params(const Material *p_material) {
 
 }
 
-void RasterizerGLES1::_render_list_forward(RenderList *p_render_list,bool p_reverse_cull) {
+void RasterizerGLES1::_render_list_forward(RenderList *p_render_list, bool p_reverse_cull, bool p_alpha_pass) {
 
 	const Material *prev_material=NULL;
 	uint64_t prev_light_key=0;
@@ -4555,7 +4561,7 @@ void RasterizerGLES1::_render_list_forward(RenderList *p_render_list,bool p_reve
 		const Geometry *geometry = e->geometry;
 
 		if (material!=prev_material || geometry->type!=prev_geometry_type) {
-			_setup_material(e->geometry,material);
+			_setup_material(e->geometry, material, !p_alpha_pass);
 			_rinfo.mat_change_count++;
 			//_setup_material_overrides(e->material,NULL,material_overrides);
 			//_setup_material_skeleton(material,skeleton);
@@ -4804,7 +4810,7 @@ void RasterizerGLES1::end_scene() {
 	glEnable(GL_LIGHTING);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
-	_render_list_forward(&opaque_render_list);
+	_render_list_forward(&opaque_render_list, false, false);
 	
 	if (draw_tex_background) {
 		
@@ -4823,7 +4829,7 @@ void RasterizerGLES1::end_scene() {
 	alpha_render_list.sort_z();
 	glEnable(GL_BLEND);
 
-	_render_list_forward(&alpha_render_list);
+	_render_list_forward(&alpha_render_list, false, true);
 
 	// reset texture matrix
 	if (texcoord_mode == VS::FIXED_MATERIAL_TEXCOORD_UV_TRANSFORM) {

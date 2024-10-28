@@ -784,14 +784,14 @@ class RasterizerGLES1 : public Rasterizer {
 
 	_FORCE_INLINE_ void _add_geometry( const Geometry* p_geometry, const InstanceData *p_instance, const Geometry *p_geometry_cmp, const GeometryOwner *p_owner);
 
-	void _render_list_forward(RenderList *p_render_list,bool p_reverse_cull=false);
+	void _render_list_forward(RenderList *p_render_list, bool p_reverse_cull, bool p_alpha_pass);
 
 	void _setup_light(LightInstance* p_instance, int p_idx);
 	void _setup_lights(const uint16_t * p_lights,int p_light_count);
 
 	_FORCE_INLINE_ void _setup_shader_params(const Material *p_material);
 	void _setup_fixed_material(const Geometry *p_geometry,const Material *p_material);
-	void _setup_material(const Geometry *p_geometry,const Material *p_material);
+	void _setup_material(const Geometry *p_geometry,const Material *p_material, bool p_opaque_pass);
 
 	Error _setup_geometry(const Geometry *p_geometry, const Material* p_material,const Skeleton *p_skeleton, const float *p_morphs);
 	void _render(const Geometry *p_geometry,const Material *p_material, const Skeleton* p_skeleton, const GeometryOwner *p_owner);
