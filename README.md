@@ -38,6 +38,7 @@ because you want your game to run on hardware it looks like it should, this vers
 
 #### GLES1 Known limitations
 
+- Certain editor gizmos and vertex colored meshes render as white.
 - Viewports do not render correctly in the editor, and escape the main viewport.
   The engine expects the editor viewport to use a framebuffer object, but FBOs are not implemented for the GLES1 renderer at the moment.
 - Render targets/viewport textures especially do not work.
