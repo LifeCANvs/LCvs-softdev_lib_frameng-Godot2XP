@@ -33,6 +33,8 @@ because you want your game to run on hardware it looks like it should, this vers
 - NO_THREADING is defined as there is no InterlockedCompareExchange64 function on NT 5.1 (Windows XP 32-bit).
   I don't know the full concequences of this but things seem to work fine, so, /shrug.
   This also means light baking may be broken.
+- Sphere mapping looks different between GLES1 and GLES2 since GLES1 uses the texgen of OpenGL, while GLES2 uses a different technique.
+  Textures used with texgen sphere mapping are also upside down.
 
 #### GLES1 Known limitations
 
