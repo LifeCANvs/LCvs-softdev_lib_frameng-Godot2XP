@@ -38,6 +38,7 @@ because you want your game to run on hardware it looks like it should, this vers
 
 - Viewports do not render correctly in the editor, and escape the main viewport.
   The engine expects the editor viewport to use a framebuffer object, but FBOs are not implemented for the GLES1 renderer at the moment.
+- Render targets/viewport textures especially do not work.
 - Texture/cubemap environment background does not work.
 - Not all FixedMaterial features work. FixedMaterials can only render using one texture at a time
   as their material properties are fed to the OpenGL fixed function lighting material system.
