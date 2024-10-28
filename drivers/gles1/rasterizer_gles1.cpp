@@ -3308,7 +3308,6 @@ void RasterizerGLES1::_add_geometry( const Geometry* p_geometry, const InstanceD
 	e->light_key=0;
 	e->light_count=0;
 
-
 	if (!shadow) {
 
 
@@ -3333,6 +3332,16 @@ void RasterizerGLES1::_add_geometry( const Geometry* p_geometry, const InstanceD
 
 	}
 
+	if (!shadow && !has_blend_alpha && has_alpha && m->depth_draw_mode == VS::MATERIAL_DEPTH_DRAW_OPAQUE_PRE_PASS_ALPHA) {
+
+		//if nothing exists, add this element as opaque too
+		RenderList::Element *oe = opaque_render_list.add_element();
+
+		if (!oe)
+			return;
+
+		memcpy(oe, e, sizeof(RenderList::Element));
+	}
 }
 
 
@@ -3526,6 +3535,15 @@ void RasterizerGLES1::_setup_material(const Geometry *p_geometry,const Material 
 
 	if (p_material->line_width > 0)
 		glLineWidth(p_material->line_width);
+
+	if (p_opaque_pass && p_material->depth_draw_mode == VS::MATERIAL_DEPTH_DRAW_OPAQUE_PRE_PASS_ALPHA && p_material->fixed_flags[VS::FIXED_MATERIAL_FLAG_USE_ALPHA] || p_material->fixed_flags[VS::FIXED_MATERIAL_FLAG_DISCARD_ALPHA]) {
+
+		glAlphaFunc(GL_GEQUAL, 0.5f);
+		glEnable(GL_ALPHA_TEST);
+	}
+	else {
+		glDisable(GL_ALPHA_TEST);
+	}
 
 	if (!shadow) {
 
@@ -4657,6 +4675,7 @@ void RasterizerGLES1::end_scene() {
 	glDepthMask(GL_TRUE);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_SCISSOR_TEST);
+	glDisable(GL_ALPHA_TEST);
 	depth_write=true;
 	depth_test=true;
 
@@ -4852,6 +4871,7 @@ void RasterizerGLES1::end_scene() {
 	// disable fog again
 	glDisable(GL_FOG);
 //	material_shader.set_conditional( MaterialShaderGLES1::USE_FOG,false);
+	glDisable(GL_ALPHA_TEST);
 
 	_debug_shadows();
 }
