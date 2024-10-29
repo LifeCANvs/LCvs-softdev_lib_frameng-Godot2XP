@@ -504,9 +504,9 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	set("global/hidpi_mode", 0);
 	hints["global/hidpi_mode"] = PropertyInfo(Variant::INT, "global/hidpi_mode", PROPERTY_HINT_ENUM, "Auto,LoDPI,HiDPI", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED);
 	set("global/show_script_in_scene_tabs", false);
-	set("global/font_size", 14);
+	set("global/font_size", 12);
 	hints["global/font_size"] = PropertyInfo(Variant::INT, "global/font_size", PROPERTY_HINT_RANGE, "10,40,1", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED);
-	set("global/source_font_size", 14);
+	set("global/source_font_size", 12);
 	hints["global/source_font_size"] = PropertyInfo(Variant::INT, "global/source_font_size", PROPERTY_HINT_RANGE, "8,96,1", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED);
 	set("global/custom_font", "");
 	hints["global/custom_font"] = PropertyInfo(Variant::STRING, "global/custom_font", PROPERTY_HINT_GLOBAL_FILE, "*.fnt", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED);

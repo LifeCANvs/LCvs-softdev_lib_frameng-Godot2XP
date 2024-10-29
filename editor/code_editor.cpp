@@ -994,8 +994,8 @@ void CodeTextEditor::_reset_zoom() {
 	Ref<DynamicFont> font = text_editor->get_font("font"); // reset source font size to default
 
 	if (font.is_valid()) {
-		EditorSettings::get_singleton()->set("global/source_font_size", 14);
-		font->set_size(14);
+		EditorSettings::get_singleton()->set("global/source_font_size", 12);
+		font->set_size(12);
 	}
 }
 
