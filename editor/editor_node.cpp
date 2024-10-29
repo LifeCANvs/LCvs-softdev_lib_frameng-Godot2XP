@@ -5142,7 +5142,7 @@ EditorNode::EditorNode() {
 	docks_visible = true;
 	distraction_free_mode = false;
 
-	const float top_spacing = 5;
+	const float top_spacing = 0;
 
 	FileAccess::set_backup_save(true);
 
