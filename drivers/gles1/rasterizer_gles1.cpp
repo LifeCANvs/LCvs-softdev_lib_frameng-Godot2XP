@@ -3134,6 +3134,24 @@ void RasterizerGLES1::capture_viewport(Image* r_capture) {
 	glPixelStorei(GL_PACK_ALIGNMENT, 4);
 	glReadPixels(viewport.x, window_size.height - (viewport.height + viewport.y), viewport.width, viewport.height, GL_RGBA, GL_UNSIGNED_BYTE, w.ptr());
 
+	bool flip = true;//current_rt == NULL;
+
+	if (flip) {
+		uint32_t *imgptr = (uint32_t *)w.ptr();
+		for (int y = 0; y < (viewport.height / 2); y++) {
+
+			uint32_t *ptr1 = &imgptr[y * viewport.width];
+			uint32_t *ptr2 = &imgptr[(viewport.height - y - 1) * viewport.width];
+
+			for (int x = 0; x < viewport.width; x++) {
+
+				uint32_t tmp = ptr1[x];
+				ptr1[x] = ptr2[x];
+				ptr2[x] = tmp;
+			}
+		}
+	}
+
 	w = DVector<uint8_t>::Write();
 	r_capture->create(viewport.width, viewport.height, 0, Image::FORMAT_RGBA, pixels);
 }
