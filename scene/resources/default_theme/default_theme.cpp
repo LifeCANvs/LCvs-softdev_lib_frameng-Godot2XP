@@ -714,9 +714,9 @@ void fill_default_theme(Ref<Theme> &t, const Ref<Font> &default_font, const Ref<
 	t->set_color("font_color_bg", "Tabs", control_font_color);
 
 	t->set_constant("top_margin", "Tabs", 24 * scale);
-	t->set_constant("label_valign_fg", "Tabs", 0 * scale);
-	t->set_constant("label_valign_bg", "Tabs", 2 * scale);
-	t->set_constant("hseparation", "Tabs", 4 * scale);
+	t->set_constant("label_valign_fg", "Tabs", 4 * scale);
+	t->set_constant("label_valign_bg", "Tabs", 5 * scale);
+	t->set_constant("hseparation", "Tabs", 2 * scale);
 
 	// Separators
 
