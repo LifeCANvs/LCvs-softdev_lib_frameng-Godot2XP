@@ -119,7 +119,11 @@ SceneStringNames::SceneStringNames() {
 	_area_enter_tree = StaticCString::create("_area_enter_tree");
 	_area_exit_tree = StaticCString::create("_area_exit_tree");
 
+	_input = StaticCString::create("_input");
 	_input_event = StaticCString::create("_input_event");
+
+	_unhandled_input = StaticCString::create("_unhandled_input");
+	_unhandled_key_input = StaticCString::create("_unhandled_key_input");
 
 	changed = StaticCString::create("changed");
 	_shader_changed = StaticCString::create("_shader_changed");

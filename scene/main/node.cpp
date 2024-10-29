@@ -49,7 +49,6 @@ void Node::_notification(int p_notification) {
 
 				Variant time = get_process_delta_time();
 				const Variant *ptr[1] = { &time };
-				Variant::CallError err;
 				get_script_instance()->call_multilevel(SceneStringNames::get_singleton()->_process, ptr, 1);
 			}
 		} break;
@@ -59,12 +58,13 @@ void Node::_notification(int p_notification) {
 
 				Variant time = get_fixed_process_delta_time();
 				const Variant *ptr[1] = { &time };
-				Variant::CallError err;
 				get_script_instance()->call_multilevel(SceneStringNames::get_singleton()->_fixed_process, ptr, 1);
 			}
 
 		} break;
 		case NOTIFICATION_ENTER_TREE: {
+			ERR_FAIL_COND(!get_viewport());
+			ERR_FAIL_COND(!get_tree());
 
 			if (data.pause_mode == PAUSE_MODE_INHERIT) {
 
@@ -87,6 +87,8 @@ void Node::_notification(int p_notification) {
 
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
+			ERR_FAIL_COND(!get_viewport());
+			ERR_FAIL_COND(!get_tree());
 
 			get_tree()->node_count--;
 			if (data.input)
@@ -98,13 +100,29 @@ void Node::_notification(int p_notification) {
 
 		} break;
 		case NOTIFICATION_READY: {
-
 			if (get_script_instance()) {
+				if (get_script_instance()->has_method(SceneStringNames::get_singleton()->_input)) {
+					set_process_input(true);
+				}
 
-				Variant::CallError err;
-				get_script_instance()->call_multilevel_reversed(SceneStringNames::get_singleton()->_ready, NULL, 0);
+				if (get_script_instance()->has_method(SceneStringNames::get_singleton()->_unhandled_input)) {
+					set_process_unhandled_input(true);
+				}
+
+				if (get_script_instance()->has_method(SceneStringNames::get_singleton()->_unhandled_key_input)) {
+					set_process_unhandled_key_input(true);
+				}
+
+				if (get_script_instance()->has_method(SceneStringNames::get_singleton()->_process)) {
+					set_process(true);
+				}
+
+				if (get_script_instance()->has_method(SceneStringNames::get_singleton()->_fixed_process)) {
+					set_fixed_process(true);
+				}
+
+				get_script_instance()->call_multilevel_reversed(SceneStringNames::get_singleton()->_ready, nullptr, 0);
 			}
-			//emit_signal(SceneStringNames::get_singleton()->enter_tree);
 
 		} break;
 		case NOTIFICATION_POSTINITIALIZE: {
@@ -126,8 +144,7 @@ void Node::_notification(int p_notification) {
 
 			// kill children as cleanly as possible
 			while (data.children.size()) {
-
-				Node *child = data.children[0];
+				Node *child = data.children[data.children.size() - 1]; //begin from the end because its faster and more consistent with creation
 				remove_child(child);
 				memdelete(child);
 			}

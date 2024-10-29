@@ -111,6 +111,8 @@ public:
 	StringName _exit_tree;
 	StringName _draw;
 	StringName _input;
+	StringName _unhandled_input;
+	StringName _unhandled_key_input;
 	StringName _ready;
 
 	StringName _pressed;
