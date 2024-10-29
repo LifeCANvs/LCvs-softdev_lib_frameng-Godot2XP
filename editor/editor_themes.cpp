@@ -48,9 +48,9 @@ Ref<Theme> create_default_theme() {
 	}
 	focus_sbt->set_draw_center(false);
 	theme->set_stylebox("EditorFocus", "EditorStyles", focus_sbt);
-	theme->set_color("prop_category", "Editor", Color::hex(0x3f3a44ff));
-	theme->set_color("prop_section", "Editor", Color::hex(0x35313aff));
-	theme->set_color("prop_subsection", "Editor", Color::hex(0x312e37ff));
+	theme->set_color("prop_category", "Editor", Color::hex(0x3f443aff));
+	theme->set_color("prop_section", "Editor", Color::hex(0x353a31ff));
+	theme->set_color("prop_subsection", "Editor", Color::hex(0x31372eff));
 	theme->set_color("fg_selected", "Editor", Color::html("ffbd8e8e"));
 	theme->set_color("fg_error", "Editor", Color::html("ffbd8e8e"));
 
