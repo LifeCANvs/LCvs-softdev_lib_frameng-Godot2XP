@@ -644,8 +644,8 @@ void fill_default_theme(Ref<Theme> &t, const Ref<Font> &default_font, const Ref<
 	t->set_constant("scroll_speed", "Tree", 12);
 
 	// ItemList
-	Ref<StyleBoxTexture> item_selected = make_stylebox(selection_png, 4, 4, 4, 4, 8, 2, 8, 2);
-	Ref<StyleBoxTexture> item_selected_oof = make_stylebox(selection_oof_png, 4, 4, 4, 4, 8, 2, 8, 2);
+	Ref<StyleBoxTexture> item_selected = make_stylebox(selection_png, 4, 4, 4, 4, 2, 2, 2, 2);
+	Ref<StyleBoxTexture> item_selected_oof = make_stylebox(selection_oof_png, 4, 4, 4, 4, 2, 2, 2, 2);
 
 	t->set_stylebox("bg", "ItemList", make_stylebox(tree_bg_png, 4, 4, 4, 5));
 	t->set_stylebox("bg_focus", "ItemList", focus);
@@ -802,6 +802,7 @@ void fill_default_theme(Ref<Theme> &t, const Ref<Font> &default_font, const Ref<
 	//t->set_constant("margin_bottom", "MarginContainer", 0 * scale);
 	//t->set_constant("hseparation", "GridContainer", 4 * scale);
 	//t->set_constant("vseparation", "GridContainer", 4 * scale);
+	t->set_constant("separation", "GridContainer", 4 * scale);
 	t->set_constant("separation", "HSplitContainer", 8 * scale);
 	t->set_constant("separation", "VSplitContainer", 8 * scale);
 	t->set_constant("autohide", "HSplitContainer", 1 * scale);
