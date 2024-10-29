@@ -3128,7 +3128,14 @@ void RasterizerGLES1::begin_frame() {
 
 void RasterizerGLES1::capture_viewport(Image* r_capture) {
 
+	DVector<uint8_t> pixels;
+	pixels.resize(viewport.width * viewport.height * 4);
+	DVector<uint8_t>::Write w = pixels.write();
+	glPixelStorei(GL_PACK_ALIGNMENT, 4);
+	glReadPixels(viewport.x, window_size.height - (viewport.height + viewport.y), viewport.width, viewport.height, GL_RGBA, GL_UNSIGNED_BYTE, w.ptr());
 
+	w = DVector<uint8_t>::Write();
+	r_capture->create(viewport.width, viewport.height, 0, Image::FORMAT_RGBA, pixels);
 }
 
 
