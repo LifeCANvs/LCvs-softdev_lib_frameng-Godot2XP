@@ -902,6 +902,8 @@ class RasterizerGLES1 : public Rasterizer {
 	uint64_t frame;
 	uint64_t scene_pass;
 	Environment *current_env;
+	VS::ScenarioDebugMode current_debug;
+	RID overdraw_material;
 
 	//void _draw_primitive(int p_points, const Vector3 *p_vertices, const Vector3 *p_normals, const Color* p_colors, const Vector3 *p_uvs,const Plane *p_tangents=NULL,int p_instanced=1);
 	//void _draw_textured_quad(const Rect2& p_rect, const Rect2& p_src_region, const Size2& p_tex_size,bool p_h_flip=false, bool p_v_flip=false );

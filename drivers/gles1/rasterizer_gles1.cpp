@@ -3160,7 +3160,7 @@ void RasterizerGLES1::set_render_target(RID p_render_target, bool p_transparent_
 
 void RasterizerGLES1::begin_scene(RID p_viewport_data,RID p_env,VS::ScenarioDebugMode p_debug) {
 
-
+	current_debug = p_debug;
 	opaque_render_list.clear();
 	alpha_render_list.clear();
 	light_instance_count=0;
@@ -3170,6 +3170,11 @@ void RasterizerGLES1::begin_scene(RID p_viewport_data,RID p_env,VS::ScenarioDebu
 	last_light_id=0;
 	directional_light_count=0;
 
+	if (current_debug == VS::SCENARIO_DEBUG_WIREFRAME) {
+#ifdef GLEW_ENABLED
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
+	}
 
 	//set state
 
@@ -3272,6 +3277,13 @@ void RasterizerGLES1::_add_geometry( const Geometry* p_geometry, const InstanceD
 	Material *m=NULL;
 	RID m_src=p_instance->material_override.is_valid() ? p_instance->material_override : p_geometry->material;
 
+#ifdef DEBUG_ENABLED
+	if (current_debug == VS::SCENARIO_DEBUG_OVERDRAW) {
+		m_src = overdraw_material;
+	}
+
+#endif
+
 	if (m_src)
 		m=material_owner.get( m_src );
 
@@ -3301,7 +3313,7 @@ void RasterizerGLES1::_add_geometry( const Geometry* p_geometry, const InstanceD
 		render_list = &alpha_render_list;
 	};
 
-	if (!m->flags[VS::MATERIAL_FLAG_UNSHADED]) {
+	if (!m->flags[VS::MATERIAL_FLAG_UNSHADED] && current_debug != VS::SCENARIO_DEBUG_SHADELESS) {
 
 		int lis = p_instance->light_instances.size();
 
@@ -3343,7 +3355,7 @@ void RasterizerGLES1::_add_geometry( const Geometry* p_geometry, const InstanceD
 	if (!shadow) {
 
 
-		if (m->flags[VS::MATERIAL_FLAG_UNSHADED]) {
+		if (m->flags[VS::MATERIAL_FLAG_UNSHADED] || current_debug == VS::SCENARIO_DEBUG_SHADELESS) {
 
 
 			e->light_key--; //special key for all the shadeless people
@@ -3662,14 +3674,15 @@ void RasterizerGLES1::_setup_material(const Geometry *p_geometry,const Material 
 			texcoord_mode=p_material->texcoord_mode[0];
 		}
 
-		if (lighting!=!p_material->flags[VS::MATERIAL_FLAG_UNSHADED]) {
-			if (p_material->flags[VS::MATERIAL_FLAG_UNSHADED]) {
-				glDisable(GL_LIGHTING);
-			} else {
+		bool have_lighting = !p_material->flags[VS::MATERIAL_FLAG_UNSHADED] && current_debug != VS::SCENARIO_DEBUG_SHADELESS;
+		if (lighting != have_lighting) {
+			if (have_lighting) {
 				glEnable(GL_LIGHTING);
+			} else {
+				glDisable(GL_LIGHTING);
 			}
 
-			lighting=!p_material->flags[VS::MATERIAL_FLAG_UNSHADED];
+			lighting = have_lighting;
 		}
 
 	}
@@ -4728,7 +4741,12 @@ void RasterizerGLES1::end_scene() {
 	
 	bool draw_tex_background=false;
 
-	if (current_env) {
+	if (current_debug == VS::SCENARIO_DEBUG_OVERDRAW) {
+
+		glClearColor(0, 0, 0, 1);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+	else if (current_env) {
 
 		switch(current_env->bg_mode) {
 
@@ -4901,7 +4919,12 @@ void RasterizerGLES1::end_scene() {
 //	material_shader.set_conditional( MaterialShaderGLES1::USE_FOG,false);
 	glDisable(GL_ALPHA_TEST);
 
-	_debug_shadows();
+#ifdef GLEW_ENABLED
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
+	current_debug = VS::SCENARIO_DEBUG_DISABLED;
+
+	//_debug_shadows();
 }
 void RasterizerGLES1::end_shadow_map() {
 #if 0
@@ -6855,6 +6878,10 @@ void RasterizerGLES1::init() {
 	glBindTexture(GL_TEXTURE_2D,white_tex);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE,whitetexdata);
 
+
+	overdraw_material = create_overdraw_debug_material();
+	current_debug = VS::SCENARIO_DEBUG_DISABLED;
+
 	//npo2_textures_available=false;
 	npo2_textures_available=extensions.has("GL_ARB_texture_non_power_of_two") && GLOBAL_DEF("rasterizer/allow_npo2_textures", true);
 	pvr_supported=extensions.has("GL_IMG_texture_compression_pvrtc");
@@ -6871,6 +6898,8 @@ void RasterizerGLES1::finish() {
 	// causes crash, incorrect function?
 	// let's try memdelete -> memdelete_arr
 	memdelete_arr(skinned_buffer);
+	free(default_material);
+	free(overdraw_material);
 }
 
 int RasterizerGLES1::get_render_info(VS::RenderInfo p_info) {
