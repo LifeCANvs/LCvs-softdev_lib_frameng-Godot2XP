@@ -535,8 +535,9 @@ void Control::_notification(int p_notification) {
 		} break;
 		case NOTIFICATION_DRAW: {
 
-			Matrix32 xform = Matrix32(data.rotation, get_pos());
-			xform.scale_basis(data.scale);
+			Matrix32 xform = Matrix32::Matrix32();
+			xform.set_rotation_and_scale(data.rotation, data.scale);
+			xform.set_origin(get_pos());
 			VisualServer::get_singleton()->canvas_item_set_transform(get_canvas_item(), xform);
 			VisualServer::get_singleton()->canvas_item_set_custom_rect(get_canvas_item(), true, Rect2(Point2(), get_size()));
 			//emit_signal(SceneStringNames::get_singleton()->draw);
@@ -1830,8 +1831,9 @@ Control::CursorShape Control::get_cursor_shape(const Point2 &p_pos) const {
 
 Matrix32 Control::get_transform() const {
 
-	Matrix32 xform = Matrix32(data.rotation, get_pos());
-	xform.scale_basis(data.scale);
+	Matrix32 xform = Matrix32::Matrix32();
+	xform.set_rotation_and_scale(data.rotation, data.scale);
+	xform.set_origin(get_pos());
 	return xform;
 }
 
