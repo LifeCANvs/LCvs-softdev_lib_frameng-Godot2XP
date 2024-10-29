@@ -688,7 +688,9 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 		input_map->load_from_globals(); //keys for game
 
 	if (video_driver == "") // specified in engine.cfg
-		video_driver = _GLOBAL_DEF("display/driver", Variant((const char *)OS::get_singleton()->get_video_driver_name(0)));
+		video_driver = GLOBAL_DEF("display/driver", "GLES1");//_GLOBAL_DEF("display/driver", Variant((const char *)OS::get_singleton()->get_video_driver_name(0)));
+
+	Globals::get_singleton()->set_custom_property_info("display/driver", PropertyInfo(Variant::STRING, "display/driver", PROPERTY_HINT_ENUM, "GLES1,GLES2"));
 
 	if (!force_res && use_custom_res && globals->has("display/width"))
 		video_mode.width = globals->get("display/width");
