@@ -210,9 +210,9 @@ void fill_default_theme(Ref<Theme> &t, const Ref<Font> &default_font, const Ref<
 
 	// Focus
 
-	Ref<StyleBoxTexture> focus = make_stylebox(focus_png, 5, 5, 5, 5);
+	Ref<StyleBoxTexture> focus = make_stylebox(focus_png, 6, 6, 6, 6, 3, 3, 3, 3);
 	for (int i = 0; i < 4; i++) {
-		focus->set_expand_margin_size(Margin(i), 1 * scale);
+		focus->set_expand_margin_size(Margin(i), 2 * scale);
 	}
 
 	// Button
@@ -310,9 +310,9 @@ void fill_default_theme(Ref<Theme> &t, const Ref<Font> &default_font, const Ref<
 
 	// MenuButton
 
-	t->set_stylebox("normal", "MenuButton", sb_button_normal);
-	t->set_stylebox("pressed", "MenuButton", sb_button_pressed);
-	t->set_stylebox("hover", "MenuButton", sb_button_pressed);
+	t->set_stylebox("normal", "MenuButton", make_stylebox(button_normal_png, 6, 6, 6, 6, 3, 3, 3, 3));
+	t->set_stylebox("pressed", "MenuButton", make_stylebox(button_pressed_png, 6, 6, 6, 6, 3, 3, 3, 3));
+	t->set_stylebox("hover", "MenuButton", make_stylebox(button_hover_png, 6, 6, 6, 6, 3, 3, 3, 3));
 	t->set_stylebox("disabled", "MenuButton", make_empty_stylebox(0, 0, 0, 0));
 	t->set_stylebox("focus", "MenuButton", sb_button_focus);
 
@@ -571,8 +571,8 @@ void fill_default_theme(Ref<Theme> &t, const Ref<Font> &default_font, const Ref<
 	t->set_color("font_color_disabled", "PopupMenu", Color(0.4, 0.4, 0.4, 0.8));
 	t->set_color("font_color_hover", "PopupMenu", control_font_color);
 
-	t->set_constant("hseparation", "PopupMenu", 4 * scale);
-	t->set_constant("vseparation", "PopupMenu", 4 * scale);
+	t->set_constant("hseparation", "PopupMenu", 2 * scale);
+	t->set_constant("vseparation", "PopupMenu", 1 * scale);
 
 	// GraphNode
 
