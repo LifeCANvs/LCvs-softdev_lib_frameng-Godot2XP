@@ -34,7 +34,7 @@ If you're looking to make a retro style video game, you can do that just fine wi
 If you're the retro PC enthusiast type that's willing to put up with an old version of Godot despite its quirks, 
 because you want your game to run on hardware it looks like it should, this version would be better than using Godot 1 or 2 directly.
 
-Keep in mind that Godot 2 was built from already outdated technology by this point, and the workflow isn't the same as a modern engine.
+Keep in mind that Godot 2 was built from already outdated technology, and the workflow isn't the same as a modern engine.
 You may need to optimize your games well if you intend to build anything substantial.
 
 #### Important Notes
