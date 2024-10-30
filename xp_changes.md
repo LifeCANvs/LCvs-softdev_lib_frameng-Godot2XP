@@ -9,10 +9,10 @@ This does not track individual bugfixes and changes made to Godot XP's new featu
 - Windows 8/10 logo for Windows export replaced with Windows XP logo to reflect supported platform.
 - DEBUG_MEMORY_ENABLED disabled since it was causing crashes, and I have no idea why.
 - Various changes to UI to make it more space efficient by default.
+- GUI theme is based on Godot 1.0's but as gray with green accents.
 
 #### Rendering
 - Display driver project setting is now a dropdown option instead of a text box.
-- GUI theme is based on Godot 1.0's but as gray with green accents.
 - Mipmap filtering options adjusted so mipmaps render more predictably to the filtering setting. They at least look better to me.
 - Billboard and Billboard Y properly implemented for both GLES1 and GLES2 rasterizers.
 - GLES1 rasterizer added with support for most features except shaders.
