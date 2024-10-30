@@ -4,7 +4,7 @@ Godot 2 XP is a fork of Godot 2 that targets legacy Windows for fun, and impleme
 **Godot 2 XP is unofficial and not affiliated with the Godot project.**  
 If you're looking for the regular version of Godot, you can find it here: https://godotengine.org
 
-The target is currently just 32-bit Windows XP, but the rasterizer should be portable to other PC-like platforms.
+The target is currently just 32-bit Windows XP, but the GLES1 rasterizer should be portable to other platforms that implement OpenGL.
 I only develop on Windows, so I have not explored other platforms.  
 "Godot 2 XP" is a "temporary" name until I find something better.
 
