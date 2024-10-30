@@ -10,3 +10,4 @@ Or I don't know how to use it. Could be either.
 - Look into OpenGL 1.x extensions for adding features like framebuffer objects, so viewports render correctly.
 - Make multi-texturing and vertex buffer objects optional features for GLES1 to lower the required OpenGL version, 
 add feature caps emulation via project settings or editor viewport setting.
+- I hate the way the Godot 2 FileSystem dock works and I really want the Godot 3 version.
