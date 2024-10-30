@@ -1763,11 +1763,11 @@ Node *EditorSceneImportPlugin::_fix_node(Node *p_node, Node *p_root, Map<Ref<Mes
 
 		BSP_Tree bsptree(faces);
 
-		Ref<RoomBounds> area = memnew(RoomBounds);
+		Ref<Room> area = memnew(Room);
 		area->set_bounds(faces);
 		area->set_geometry_hint(faces);
 
-		Room *room = memnew(Room);
+		RoomInstance *room = memnew(RoomInstance);
 		room->set_name(_fixstr(name, "room"));
 		room->set_transform(mi->get_transform());
 		room->set_room(area);
@@ -1784,7 +1784,7 @@ Node *EditorSceneImportPlugin::_fix_node(Node *p_node, Node *p_root, Map<Ref<Mes
 		Spatial *dummy = p_node->cast_to<Spatial>();
 		ERR_FAIL_COND_V(!dummy, NULL);
 
-		Room *room = memnew(Room);
+		RoomInstance *room = memnew(RoomInstance);
 		room->set_name(_fixstr(name, "room"));
 		room->set_transform(dummy->get_transform());
 

@@ -437,7 +437,7 @@ void register_scene_types() {
 	ObjectTypeDB::register_type<CollisionPolygon>();
 	ObjectTypeDB::register_type<RayCast>();
 	ObjectTypeDB::register_type<MultiMeshInstance>();
-	ObjectTypeDB::register_type<Room>();
+	ObjectTypeDB::register_type<RoomInstance>();
 	ObjectTypeDB::register_type<Curve3D>();
 	ObjectTypeDB::register_type<Path>();
 	ObjectTypeDB::register_type<PathFollow>();
@@ -535,7 +535,7 @@ void register_scene_types() {
 	ObjectTypeDB::register_virtual_type<Material>();
 	ObjectTypeDB::register_type<FixedMaterial>();
 	ObjectTypeDB::register_type<ShaderMaterial>();
-	ObjectTypeDB::register_type<RoomBounds>();
+	ObjectTypeDB::register_type<Room>();
 	ObjectTypeDB::register_type<MaterialShaderGraph>();
 	ObjectTypeDB::register_type<MaterialShader>();
 	ObjectTypeDB::add_compatibility_type("Shader", "MaterialShader");

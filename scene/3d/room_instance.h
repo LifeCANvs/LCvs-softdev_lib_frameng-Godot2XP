@@ -45,13 +45,13 @@
 
 */
 
-class Room : public VisualInstance {
+class RoomInstance : public VisualInstance {
 
-	OBJ_TYPE(Room, VisualInstance);
+	OBJ_TYPE(RoomInstance, VisualInstance);
 
 public:
 private:
-	Ref<RoomBounds> room;
+	Ref<Room> room;
 
 	RID sound_room;
 
@@ -77,8 +77,8 @@ public:
 	virtual AABB get_aabb() const;
 	virtual DVector<Face3> get_faces(uint32_t p_usage_flags) const;
 
-	void set_room(const Ref<RoomBounds> &p_room);
-	Ref<RoomBounds> get_room() const;
+	void set_room(const Ref<Room> &p_room);
+	Ref<Room> get_room() const;
 
 	void set_simulate_acoustics(bool p_enable);
 	bool is_simulating_acoustics() const;
@@ -87,8 +87,8 @@ public:
 
 	RID get_sound_room() const;
 
-	Room();
-	~Room();
+	RoomInstance();
+	~RoomInstance();
 };
 
 #endif // ROOM_INSTANCE_H

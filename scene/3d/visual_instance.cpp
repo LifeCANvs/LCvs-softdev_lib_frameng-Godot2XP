@@ -49,12 +49,12 @@ void VisualInstance::_notification(int p_what) {
 
 			// CHECK ROOM
 			Spatial *parent = get_parent_spatial();
-			Room *room = NULL;
+			RoomInstance *room = NULL;
 			bool is_geom = cast_to<GeometryInstance>();
 
 			while (parent) {
 
-				room = parent->cast_to<Room>();
+				room = parent->cast_to<RoomInstance>();
 				if (room)
 					break;
 

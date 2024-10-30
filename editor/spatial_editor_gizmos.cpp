@@ -1307,7 +1307,7 @@ SpatialPlayerSpatialGizmo::SpatialPlayerSpatialGizmo(SpatialPlayer *p_splayer) {
 void RoomSpatialGizmo::redraw() {
 
 	clear();
-	Ref<RoomBounds> roomie = room->get_room();
+	Ref<Room> roomie = room->get_room();
 	if (roomie.is_null())
 		return;
 	DVector<Face3> faces = roomie->get_geometry_hint();
@@ -1358,7 +1358,7 @@ void RoomSpatialGizmo::redraw() {
 	add_collision_segments(lines);
 }
 
-RoomSpatialGizmo::RoomSpatialGizmo(Room *p_room) {
+RoomSpatialGizmo::RoomSpatialGizmo(RoomInstance *p_room) {
 
 	set_spatial_node(p_room);
 	room = p_room;
@@ -2657,9 +2657,9 @@ Ref<SpatialEditorGizmo> SpatialEditorGizmos::get_gizmo(Spatial *p_spatial) {
 		return misg;
 	}
 
-	if (p_spatial->cast_to<Room>()) {
+	if (p_spatial->cast_to<RoomInstance>()) {
 
-		Ref<RoomSpatialGizmo> misg = memnew(RoomSpatialGizmo(p_spatial->cast_to<Room>()));
+		Ref<RoomSpatialGizmo> misg = memnew(RoomSpatialGizmo(p_spatial->cast_to<RoomInstance>()));
 		return misg;
 	}
 

@@ -233,11 +233,11 @@ class RoomSpatialGizmo : public EditorSpatialGizmo {
 		bool operator<(const _EdgeKey &p_with) const { return from == p_with.from ? to < p_with.to : from < p_with.from; }
 	};
 
-	Room *room;
+	RoomInstance *room;
 
 public:
 	void redraw();
-	RoomSpatialGizmo(Room *p_room = NULL);
+	RoomSpatialGizmo(RoomInstance *p_room = NULL);
 };
 
 class PortalSpatialGizmo : public EditorSpatialGizmo {

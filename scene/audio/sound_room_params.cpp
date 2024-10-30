@@ -54,10 +54,10 @@ void SoundRoomParams::_notification(int p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			//#if 0
 			Node *n = this;
-			Room *room_instance = NULL;
+			RoomInstance *room_instance = NULL;
 			while (n) {
 
-				room_instance = n->cast_to<Room>();
+				room_instance = n->cast_to<RoomInstance>();
 				if (room_instance) {
 
 					break;

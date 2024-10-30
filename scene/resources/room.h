@@ -36,9 +36,9 @@
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
-class RoomBounds : public Resource {
+class Room : public Resource {
 
-	OBJ_TYPE(RoomBounds, Resource);
+	OBJ_TYPE(Room, Resource);
 	RES_BASE_EXTENSION("room");
 
 	RID area;
@@ -59,8 +59,8 @@ public:
 	void set_geometry_hint(const DVector<Face3> &geometry_hint);
 	DVector<Face3> get_geometry_hint() const;
 
-	RoomBounds();
-	~RoomBounds();
+	Room();
+	~Room();
 };
 
 #endif // ROOM_H
