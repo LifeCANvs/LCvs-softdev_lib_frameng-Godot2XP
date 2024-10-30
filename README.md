@@ -1,27 +1,24 @@
 ## Godot 2 XP - What is this?
 
-Godot 2 XP is a fork of Godot 2 that targets legacy platforms for fun, and implements an OpenGL 1.x compatible renderer.
-
-**Godot 2 XP is unofficial and not affiliated with the Godot project.**
-
+Godot 2 XP is a fork of Godot 2 that targets legacy platforms for fun, and implements an OpenGL 1.x compatible renderer.  
+**Godot 2 XP is unofficial and not affiliated with the Godot project.**  
 If you're looking for the regular version of Godot, you can find it here: https://godotengine.org
 
-
 The target is currently just 32-bit Windows XP, but the rasterizer should be portable to other PC-like platforms.
-I only develop on Windows, so I have not explored other platforms.
+I only develop on Windows, so I have not explored other platforms.  
 "Godot 2 XP" is a "temporary" name until I find something better.
 
-You can check what I've done so far and what I have in mind here:
-[List of changes made since Godot 2.1.7 RC](/xp_changes.md)
-[My ideas and plans](/xp_ideas.md)
+You can check what I've done so far and what I have in mind here:  
+[List of changes made since Godot 2.1.7 RC](/xp_changes.md)  
+[My ideas and plans](/xp_ideas.md)  
 
 #### Can I use this to load existing games?
 
 This version of Godot is not intended as a drop-in replacement for Godot 2 games, and is an enthusiast version made for my own purposes.
-I may add, change, or remove features as intended for my own use.
+I may add, change, or remove features as intended for my own use.  
 The GLES1 rasterizer has fundamental differences from the GLES2 rasterizer.
-Existing games made for Godot 2 target the GLES2 renderer, but this fork uses the GLES1 renderer by default for compatibility reasons.
-If you load a GD2 project in this, it might not look correct without tweaking the video driver setting.
+Existing games made for Godot 2 target the GLES2 renderer, but this fork uses the GLES1 renderer by default for compatibility reasons.  
+If you load a GD2 project in this, it might not look correct without tweaking the video driver setting.  
 This engine also has fundamental backwards incompatible changes made to it since Godot 2.1.
 
 #### Should I use this over modern Godot?
