@@ -1,6 +1,6 @@
 ## Godot 2 XP - What is this?
 
-Godot 2 XP is a fork of Godot 2 that targets legacy platforms for fun, and implements an OpenGL 1.x compatible renderer.  
+Godot 2 XP is a fork of Godot 2 that targets legacy Windows for fun, and implements an OpenGL 1.x compatible renderer.  
 **Godot 2 XP is unofficial and not affiliated with the Godot project.**  
 If you're looking for the regular version of Godot, you can find it here: https://godotengine.org
 
