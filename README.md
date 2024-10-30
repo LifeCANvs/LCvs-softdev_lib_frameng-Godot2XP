@@ -48,6 +48,7 @@ You may need to optimize your games well if you intend to build anything substan
   This also means light baking may be broken.
 - Sphere mapping looks different between GLES1 and GLES2 since GLES1 uses the texgen of OpenGL, while GLES2 uses a different technique.
   Textures used with texgen sphere mapping are also upside down.
+- Meshes that use vertex colors alongside features like Lighting do not work. Need to explore GL_COLOR_MATERIAL.
 
 #### GLES1 Known limitations
 
