@@ -5590,21 +5590,20 @@ EditorNode::EditorNode() {
 		menu_hb->add_child(sp);
 	}
 
-	//PanelContainer *vu_cont = memnew(PanelContainer);
-	//vu_cont->add_style_override("panel", gui_base->get_stylebox("hover", "Button"));
-	//menu_hb->add_child(vu_cont);
+	PanelContainer *vu_cont = memnew(PanelContainer);
+	vu_cont->add_style_override("panel", gui_base->get_stylebox("hover", "Button"));
+	menu_hb->add_child(vu_cont);
 
-	audio_vu = NULL;
-	//audio_vu = memnew(TextureProgress);
-	//CenterContainer *vu_cc = memnew(CenterContainer);
-	//vu_cc->add_child(audio_vu);
-	//vu_cont->add_child(vu_cc);
-	//audio_vu->set_under_texture(gui_base->get_icon("VuEmpty", "EditorIcons"));
-	//audio_vu->set_progress_texture(gui_base->get_icon("VuFull", "EditorIcons"));
-	//audio_vu->set_max(24);
-	//audio_vu->set_min(-80);
-	//audio_vu->set_step(0.01);
-	//audio_vu->set_val(0);
+	audio_vu = memnew(TextureProgress);
+	CenterContainer *vu_cc = memnew(CenterContainer);
+	vu_cc->add_child(audio_vu);
+	vu_cont->add_child(vu_cc);
+	audio_vu->set_under_texture(gui_base->get_icon("VuEmpty", "EditorIcons"));
+	audio_vu->set_progress_texture(gui_base->get_icon("VuFull", "EditorIcons"));
+	audio_vu->set_max(24);
+	audio_vu->set_min(-80);
+	audio_vu->set_step(0.01);
+	audio_vu->set_val(0);
 
 	if (top_spacing > 0) {
 		Control *sp = memnew(Control);
