@@ -35,6 +35,7 @@
 #include "scene/resources/box_shape.h"
 #include "scene/resources/capsule_shape.h"
 #include "scene/resources/convex_polygon_shape.h"
+#include "scene/resources/concave_polygon_shape.h"
 #include "scene/resources/plane_shape.h"
 #include "scene/resources/ray_shape.h"
 #include "scene/resources/sphere_shape.h"
@@ -1896,6 +1897,13 @@ void CollisionShapeSpatialGizmo::redraw() {
 
 		add_lines(points, SpatialEditorGizmos::singleton->shape_material);
 		add_collision_segments(points);
+	}
+
+	if (s->cast_to<ConcavePolygonShape>()) {
+
+		Ref<ConcavePolygonShape> cs2 = s;
+		add_collision_segments(cs2->gen_debug_mesh_lines());
+		add_mesh(cs2->get_debug_mesh());
 	}
 
 	if (s->cast_to<ConvexPolygonShape>()) {

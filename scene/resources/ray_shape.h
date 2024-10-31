@@ -40,9 +40,10 @@ class RayShape : public Shape {
 protected:
 	static void _bind_methods();
 	virtual void _update_shape();
-	virtual Vector<Vector3> _gen_debug_mesh_lines();
 
 public:
+	virtual Vector<Vector3> gen_debug_mesh_lines();
+
 	void set_length(float p_length);
 	float get_length() const;
 

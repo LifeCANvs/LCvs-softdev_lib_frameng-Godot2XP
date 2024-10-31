@@ -44,9 +44,9 @@ protected:
 
 	virtual void _update_shape();
 
-	virtual Vector<Vector3> _gen_debug_mesh_lines();
-
 public:
+	virtual Vector<Vector3> gen_debug_mesh_lines();
+
 	void set_radius(float p_radius);
 	float get_radius() const;
 	void set_height(float p_height);

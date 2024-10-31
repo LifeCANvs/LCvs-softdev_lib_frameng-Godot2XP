@@ -32,7 +32,7 @@
 #include "quick_hull.h"
 #include "servers/physics_server.h"
 
-Vector<Vector3> ConvexPolygonShape::_gen_debug_mesh_lines() {
+Vector<Vector3> ConvexPolygonShape::gen_debug_mesh_lines() {
 
 	DVector<Vector3> points = get_points();
 

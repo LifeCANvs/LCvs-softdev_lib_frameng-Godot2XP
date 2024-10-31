@@ -42,9 +42,9 @@ protected:
 	static void _bind_methods();
 	virtual void _update_shape();
 
-	virtual Vector<Vector3> _gen_debug_mesh_lines();
-
 public:
+	virtual Vector<Vector3> gen_debug_mesh_lines();
+
 	void set_plane(Plane p_plane);
 	Plane get_plane() const;
 
