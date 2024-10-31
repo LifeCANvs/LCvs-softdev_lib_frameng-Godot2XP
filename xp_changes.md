@@ -3,6 +3,7 @@
 #### General
 - Renamed to GDXP 2.2
 - Added gizmo for concave collision shapes.
+- RoomInstance node and Room resource have been named back to their original names. (from Room and RoomBounds)
 - Fixed chibi tracker module player's panning so your left ear can also enjoy the music.
 
 
