@@ -2,6 +2,7 @@
 
 #### General
 - Renamed to GDXP 2.2
+- VU meter added back to top right since there's enough space.
 - Added gizmo for concave collision shapes.
 - RoomInstance node and Room resource have been named back to their original names. (from Room and RoomBounds)
 - Fixed chibi tracker module player's panning so your left ear can also enjoy the music.
@@ -19,6 +20,7 @@ This does not track individual bugfixes and changes made to Godot XP's new featu
 - DEBUG_MEMORY_ENABLED disabled since it was causing crashes, and I have no idea why.
 - Various changes to UI to make it more space efficient by default.
 - GUI theme is based on Godot 1.0's but as gray with green accents.
+- VU meter disabled for space reasons.
 
 #### Rendering
 - GLES1 rasterizer added with support for most features except shaders and render targets.
