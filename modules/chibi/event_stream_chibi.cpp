@@ -353,7 +353,8 @@ void CPMixerImpl::set_voice_panning(int p_voice_index, int p_pan) {
 	ERR_FAIL_COND(v.channel == AudioMixer::INVALID_CHANNEL);
 	if (p_pan == CP_PAN_SURROUND)
 		p_pan = CP_PAN_CENTER;
-	float p = p_pan / 256.0;
+	// Left to Right!!
+	float p = ((p_pan / 256.0) * 2) - 1;
 	mixer->channel_set_pan(v.channel, p);
 }
 
