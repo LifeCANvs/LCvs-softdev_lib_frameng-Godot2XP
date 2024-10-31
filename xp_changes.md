@@ -6,6 +6,7 @@
 - Added gizmo for concave collision shapes.
 - RoomInstance node and Room resource have been named back to their original names. (from Room and RoomBounds)
 - Fixed chibi tracker module player's panning so your left ear can also enjoy the music.
+- Backported sync_via_compositor from Godot 3.
 
 
 ## Godot 2.1.7 RC interim version

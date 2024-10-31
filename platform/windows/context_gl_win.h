@@ -51,6 +51,8 @@
 #include <windows.h>
 
 typedef bool(APIENTRY *PFNWGLSWAPINTERVALEXTPROC)(int interval);
+typedef HRESULT(APIENTRY *DwmFlushProc)();
+typedef HRESULT(APIENTRY *DwmIsCompositionEnabledProc)(BOOL *pfEnabled);
 
 class ContextGL_Win : public ContextGL {
 
@@ -60,8 +62,13 @@ class ContextGL_Win : public ContextGL {
 	HWND hWnd;
 	bool opengl_3_context;
 	bool use_vsync;
+	bool vsync_via_compositor;
 
 	PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT;
+	DwmFlushProc dwmFlushFunc;
+	DwmIsCompositionEnabledProc dwmIsCompositionEnabledFunc;
+
+	bool should_vsync_via_compositor();
 
 public:
 	virtual void release_current();

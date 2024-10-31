@@ -318,6 +318,9 @@ public:
 	void set_use_vsync(bool p_enable);
 	bool is_vsync_enabled() const;
 
+	void set_vsync_via_compositor(bool p_enable);
+	bool is_vsync_via_compositor_enabled() const;
+
 	Dictionary get_engine_version() const;
 
 	static _OS *get_singleton() { return singleton; }

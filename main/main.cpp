@@ -109,6 +109,7 @@ static bool use_debug_profiler = false;
 static bool force_lowdpi = false;
 static int init_screen = -1;
 static bool use_vsync = true;
+static bool vsync_via_compositor = false;
 static bool editor = false;
 
 static OS::ProcessID allow_focus_steal_pid = 0;
@@ -725,6 +726,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 	GLOBAL_DEF("display/borderless_window", video_mode.borderless_window);
 	GLOBAL_DEF("display/always_on_top", video_mode.always_on_top);
 	use_vsync = GLOBAL_DEF("display/use_vsync", use_vsync);
+	vsync_via_compositor = GLOBAL_DEF("display/vsync_via_compositor", vsync_via_compositor);
 	GLOBAL_DEF("display/test_width", 0);
 	GLOBAL_DEF("display/test_height", 0);
 	OS::get_singleton()->_pixel_snap = GLOBAL_DEF("display/use_2d_pixel_snap", false);
@@ -880,6 +882,7 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 	}
 
 	OS::get_singleton()->set_use_vsync(use_vsync);
+	OS::get_singleton()->set_vsync_via_compositor(vsync_via_compositor);
 
 	register_core_singletons();
 

@@ -63,6 +63,8 @@ class OS {
 	float _time_scale;
 	bool _pixel_snap;
 	bool _allow_hidpi;
+	bool _use_vsync;
+	bool _vsync_via_compositor;
 
 	char *last_error;
 
@@ -434,6 +436,9 @@ public:
 
 	virtual void set_use_vsync(bool p_enable);
 	virtual bool is_vsync_enabled() const;
+
+	virtual void set_vsync_via_compositor(bool p_enable);
+	virtual bool is_vsync_via_compositor_enabled() const;
 
 	Dictionary get_engine_version() const;
 

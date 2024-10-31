@@ -44,6 +44,8 @@
 
 #include "context_gl_win.h"
 
+#include <dwmapi.h>
+
 //#include "drivers/opengl/glwrapper.h"
 //#include "ctxgl_procaddr.h"
 
@@ -74,9 +76,41 @@ int ContextGL_Win::get_window_height() {
 	return OS::get_singleton()->get_video_mode().height;
 }
 
+bool ContextGL_Win::should_vsync_via_compositor() {
+
+	if (OS::get_singleton()->is_window_fullscreen() || !OS::get_singleton()->is_vsync_via_compositor_enabled()) {
+		return false;
+	}
+
+	// Note: All Windows versions supported by Godot have a compositor.
+	// It can be disabled on earlier Windows versions.
+	BOOL dwm_enabled;
+
+	if (dwmFlushFunc && dwmIsCompositionEnabledFunc && SUCCEEDED(dwmIsCompositionEnabledFunc(&dwm_enabled))) {
+		return dwm_enabled;
+	}
+
+	return false;
+}
+
 void ContextGL_Win::swap_buffers() {
 
 	SwapBuffers(hDC);
+
+	if (use_vsync) {
+		bool vsync_via_compositor_now = should_vsync_via_compositor();
+
+		if (vsync_via_compositor_now) {
+			dwmFlushFunc();
+		}
+
+		if (vsync_via_compositor_now != vsync_via_compositor) {
+			// The previous frame had a different operating mode than this
+			// frame.  Set the 'vsync_via_compositor' member variable and the
+			// OpenGL swap interval to their proper values.
+			set_use_vsync(true);
+		}
+	}
 }
 
 /*
@@ -95,9 +129,13 @@ static GLWrapperFuncPtr wrapper_get_proc_address(const char* p_function) {
 
 void ContextGL_Win::set_use_vsync(bool p_use) {
 
+	vsync_via_compositor = p_use && should_vsync_via_compositor();
+
 	if (wglSwapIntervalEXT) {
-		wglSwapIntervalEXT(p_use ? 1 : 0);
+		int swap_interval = (p_use && !vsync_via_compositor) ? 1 : 0;
+		wglSwapIntervalEXT(swap_interval);
 	}
+
 	use_vsync = p_use;
 }
 
@@ -196,6 +234,16 @@ Error ContextGL_Win::initialize() {
 	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
 	//	glWrapperInit(wrapper_get_proc_address);
 
+	HMODULE dwmapi = LoadLibraryW(L"dwmapi.dll");
+	if (dwmapi) {
+		dwmFlushFunc = (DwmFlushProc)GetProcAddress(dwmapi, "DwmFlush");
+		dwmIsCompositionEnabledFunc = (DwmIsCompositionEnabledProc)GetProcAddress(dwmapi, "DwmIsCompositionEnabled");
+	}
+	else {
+		dwmFlushFunc = NULL;
+		dwmIsCompositionEnabledFunc = NULL;
+	}
+
 	return OK;
 }
 
@@ -204,6 +252,7 @@ ContextGL_Win::ContextGL_Win(HWND hwnd, bool p_opengl_3_context) {
 	opengl_3_context = p_opengl_3_context;
 	hWnd = hwnd;
 	use_vsync = false;
+	vsync_via_compositor = false;
 }
 
 ContextGL_Win::~ContextGL_Win() {

@@ -491,6 +491,15 @@ bool _OS::is_vsync_enabled() const {
 	return OS::get_singleton()->is_vsync_enabled();
 }
 
+void _OS::set_vsync_via_compositor(bool p_enable) {
+	OS::get_singleton()->set_vsync_via_compositor(p_enable);
+}
+
+bool _OS::is_vsync_via_compositor_enabled() const {
+
+	return OS::get_singleton()->is_vsync_via_compositor_enabled();
+}
+
 /*
 enum Weekday {
 	DAY_SUNDAY,
@@ -1178,6 +1187,9 @@ void _OS::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("set_use_vsync", "enable"), &_OS::set_use_vsync);
 	ObjectTypeDB::bind_method(_MD("is_vsync_enabled"), &_OS::is_vsync_enabled);
+
+	ObjectTypeDB::bind_method(_MD("set_vsync_via_compositor", "enable"), &_OS::set_vsync_via_compositor);
+	ObjectTypeDB::bind_method(_MD("is_vsync_via_compositor_enabled"), &_OS::is_vsync_via_compositor_enabled);
 
 	ObjectTypeDB::bind_method(_MD("get_engine_version"), &_OS::get_engine_version);
 

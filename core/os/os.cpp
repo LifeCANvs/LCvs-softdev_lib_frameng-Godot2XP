@@ -518,11 +518,19 @@ String OS::get_joy_guid(int p_device) const {
 void OS::set_context(int p_context) {
 }
 void OS::set_use_vsync(bool p_enable) {
+	_use_vsync = p_enable;
 }
 
 bool OS::is_vsync_enabled() const {
+	return _use_vsync;
+}
 
-	return true;
+void OS::set_vsync_via_compositor(bool p_enable) {
+	_vsync_via_compositor = p_enable;
+}
+
+bool OS::is_vsync_via_compositor_enabled() const {
+	return _vsync_via_compositor;
 }
 
 Dictionary OS::get_engine_version() const {
@@ -576,6 +584,8 @@ OS::OS() {
 	_time_scale = 1.0;
 	_pixel_snap = false;
 	_allow_hidpi = true;
+	_use_vsync = true;
+	_vsync_via_compositor = false;
 	Math::seed(1234567);
 }
 
