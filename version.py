@@ -1,6 +1,6 @@
-short_name = "godot"
-name = "Godot Engine"
+short_name = "gdxp"
+name = "GDXP"
 major = 2
-minor = 1
-patch = 7
-status = "rc"
+minor = 2
+#patch = 7
+status = "dev"
