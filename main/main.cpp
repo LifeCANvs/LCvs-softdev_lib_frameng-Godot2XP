@@ -109,7 +109,7 @@ static bool use_debug_profiler = false;
 static bool force_lowdpi = false;
 static int init_screen = -1;
 static bool use_vsync = true;
-static bool vsync_via_compositor = false;
+static bool vsync_via_compositor = true;
 static bool editor = false;
 
 static OS::ProcessID allow_focus_steal_pid = 0;
