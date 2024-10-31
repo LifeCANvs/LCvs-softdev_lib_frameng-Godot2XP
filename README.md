@@ -1,16 +1,16 @@
-## Godot 2 XP - What is this?
+## GDXP - What is this?
 
-Godot 2 XP is a fork of Godot 2 that targets legacy Windows for fun, and implements an OpenGL 1.x compatible renderer.  
-**Godot 2 XP is unofficial and not affiliated with the Godot project.**  
+GDXP is a fork of Godot 2.1.7 RC that targets legacy Windows for fun, and implements an OpenGL 1.x compatible renderer.  
+**GDXP is unofficial and not affiliated with the Godot project.**  
 If you're looking for the regular version of Godot, you can find it here: https://godotengine.org
 
 The target is currently just 32-bit Windows XP, but the GLES1 rasterizer should be portable to other platforms that implement OpenGL.
 I only develop on Windows, so I have not explored other platforms.  
-"Godot 2 XP" is a "temporary" name until I find something better.
+"GDXP" is kind of a temporary name but I have nothing better.
 
 You can check what I've done so far and what I have in mind here:  
-[List of changes made since Godot 2.1.7 RC](/xp_changes.md)  
-[My ideas and plans](/xp_ideas.md)  
+[Changelog](/xp_changes.md)  
+[Ideas/Plans](/xp_ideas.md)  
 
 #### Can I use this to load existing games?
 
@@ -64,72 +64,5 @@ You may need to optimize your games well if you intend to build anything substan
   The GLES2 renderer allows you to select textures for features like specular/bump/emission, but in the GLES1 renderer
   these are treated as vertex lighting modifiers.
 - ShaderMaterials and Shaders do not work AT ALL. This would require OpenGL extensions to support.
-
-## Original README
-
-[![GODOT](/logo.png)](https://godotengine.org)
-
-## Godot Engine
-
-Homepage: https://godotengine.org
-
-#### 2D and 3D cross-platform game engine
-
-Godot Engine is a feature-packed, cross-platform game engine to create 2D and
-3D games from a unified interface. It provides a comprehensive set of common
-tools, so that users can focus on making games without having to reinvent the
-wheel. Games can be exported in one click to a number of platforms, including
-the major desktop platforms (Linux, Mac OSX, Windows) as well as mobile
-(Android, iOS) and web-based (HTML5) platforms.
-
-#### Free, open source and community-driven
-
-Godot is completely free and open source under the very permissive MIT license.
-No strings attached, no royalties, nothing. The users' games are theirs, down
-to the last line of engine code. Godot's development is fully independent and
-community-driven, empowering users to help shape their engine to match their
-expectations. It is supported by the Software Freedom Conservancy
-not-for-profit.
-
-Before being open sourced in February 2014, Godot had been developed by Juan
-Linietsky and Ariel Manzur (both still maintaining the project) for several
-years as an in-house engine, used to publish several work-for-hire titles.
-
-### Getting the engine
-
-#### Binary downloads
-
-Official binaries for the Godot editor and the export templates can be found
-[on the homepage](https://godotengine.org/download).
-
-#### Compiling from source
-
-[See the official docs](http://docs.godotengine.org/en/latest/development/compiling/)
-for compilation instructions for every supported platform.
-
-### Community
-
-Godot is not only an engine but an ever-growing community of users and engine
-developers. The main community channels are listed [on the homepage](https://godotengine.org/community).
-
-To get in touch with the developers, the best way is to join the
-[#godotengine IRC channel](https://webchat.freenode.net/?channels=godotengine)
-on Freenode.
-
-### Documentation and demos
-
-The official documentation is hosted on [ReadTheDocs](http://docs.godotengine.org).
-It is maintained by the Godot community in its own [GitHub repository](https://github.com/godotengine/godot-docs).
-
-The [class reference](http://docs.godotengine.org/en/latest/classes/)
-is also accessible from within the engine.
-
-The official demos are maintained in their own [GitHub repository](https://github.com/godotengine/godot-demo-projects)
-as well.
-
-There are also a number of other learning resources provided by the community,
-such as text and video tutorials, demos, etc. Consult the [community channels](https://godotengine.org/community)
 for more info.
 
-[![Build Status](https://travis-ci.org/godotengine/godot.svg?branch=master)](https://travis-ci.org/godotengine/godot)
-[![Code Triagers Badge](https://www.codetriage.com/godotengine/godot/badges/users.svg)](https://www.codetriage.com/godotengine/godot)
