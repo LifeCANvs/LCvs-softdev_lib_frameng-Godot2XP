@@ -1,4 +1,12 @@
-## Changes since Godot 2.1.7 RC
+## GDXP 2.2 dev
+
+#### General
+- Renamed to GDXP 2.2
+- Added gizmo for concave collision shapes.
+- Fixed chibi tracker module player's panning so your left ear can also enjoy the music.
+
+
+## Godot 2.1.7 RC interim version
 
 This does not track individual bugfixes and changes made to Godot XP's new features since this section.
 
