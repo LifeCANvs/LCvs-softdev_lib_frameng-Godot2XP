@@ -1073,6 +1073,7 @@ MeshInstanceSpatialGizmo::MeshInstanceSpatialGizmo(MeshInstance *p_mesh) {
 void Position3DSpatialGizmo::redraw() {
 
 	clear();
+
 	add_mesh(SpatialEditorGizmos::singleton->pos3d_mesh);
 	Vector<Vector3> cursor_points;
 	float cs = 0.25;
