@@ -3598,8 +3598,10 @@ void RasterizerGLES1::_setup_material(const Geometry *p_geometry,const Material 
 	else
 		glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);*/
 
-	if (p_material->line_width > 0)
-		glLineWidth(p_material->line_width);
+	if (p_material->line_width != line_width) {
+		line_width = p_material->line_width;
+		glLineWidth(line_width);
+	}
 
 	if (p_opaque_pass && p_material->depth_draw_mode == VS::MATERIAL_DEPTH_DRAW_OPAQUE_PRE_PASS_ALPHA && p_material->fixed_flags[VS::FIXED_MATERIAL_FLAG_USE_ALPHA] || p_material->fixed_flags[VS::FIXED_MATERIAL_FLAG_DISCARD_ALPHA]) {
 
@@ -4898,6 +4900,8 @@ void RasterizerGLES1::end_scene() {
 
 	blend_mode=VS::MATERIAL_BLEND_MODE_MIX;
 	texcoord_mode = VS::FIXED_MATERIAL_TEXCOORD_UV;
+	line_width = 1.0f;
+	glLineWidth(1.0);
 	lighting=true;
 	glEnable(GL_LIGHTING);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -4934,6 +4938,11 @@ void RasterizerGLES1::end_scene() {
 	if (texcoord_mode == VS::FIXED_MATERIAL_TEXCOORD_SPHERE) {
 		glDisable(GL_TEXTURE_GEN_S);
 		glDisable(GL_TEXTURE_GEN_T);
+	}
+
+	if (line_width != 1.0f) {
+		line_width = 1.0f;
+		glLineWidth(1.0);
 	}
 
 	glMatrixMode(GL_MODELVIEW);
