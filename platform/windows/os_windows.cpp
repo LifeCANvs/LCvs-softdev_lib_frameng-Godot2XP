@@ -1177,6 +1177,36 @@ void OS_Windows::initialize(const VideoMode &p_desired, int p_video_driver, int 
 	RegisterTouchWindow(hWnd, 0); // Windows 7
 #endif
 
+	//!Engine::get_singleton()->is_editor_hint() 
+	if (!OS::get_singleton()->is_in_low_processor_usage_mode()) {
+		// Increase priority for projects that are not in low-processor mode (typically games)
+		// to reduce the risk of frame stuttering.
+		// This is not done for the editor to prevent importers or resource bakers
+		// from making the system unresponsive.
+		SetPriorityClass(GetCurrentProcess(), ABOVE_NORMAL_PRIORITY_CLASS);
+
+		HMODULE Avrt = LoadLibraryA("Avrt.dll");
+		if (Avrt != NULL) {
+			typedef HANDLE(WINAPI * AvSetMmThreadCharacteristicsA_t)(LPCSTR TaskName, LPDWORD TaskIndex);
+			typedef BOOL(WINAPI * AvSetMmThreadPriority_t)(HANDLE AvrtHandle, int Priority);
+
+			AvSetMmThreadCharacteristicsA_t AvSetMmThreadCharacteristicsA = (AvSetMmThreadCharacteristicsA_t)GetProcAddress(Avrt, "AvSetMmThreadCharacteristicsA");
+			AvSetMmThreadPriority_t AvSetMmThreadPriority = (AvSetMmThreadPriority_t)GetProcAddress(Avrt, "AvSetMmThreadPriority");
+
+			if (AvSetMmThreadCharacteristicsA && AvSetMmThreadPriority)
+			{
+				DWORD index = 0;
+				HANDLE handle = AvSetMmThreadCharacteristicsA("Games", &index);
+				if (handle)
+					AvSetMmThreadPriority(handle, 3); // AVRT_PRIORITY_CRITICAL ?
+			}
+		}
+
+		// This is needed to make sure that background work does not starve the main thread.
+		// This is only setting priority of this thread, not the whole process.
+		SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
+	}
+
 	_ensure_data_dir();
 
 	DragAcceptFiles(hWnd, true);
