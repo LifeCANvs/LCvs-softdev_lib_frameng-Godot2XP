@@ -38,10 +38,52 @@
 #include "version.h"
 
 OS *OS::singleton = NULL;
+uint64_t OS::target_ticks = 0;
 
 OS *OS::get_singleton() {
 
 	return singleton;
+}
+
+
+void OS::add_frame_delay(bool p_can_draw) {
+	const uint32_t frame_delay = get_frame_delay();
+	if (frame_delay) {
+		// Add fixed frame delay to decrease CPU/GPU usage. This doesn't take
+		// the actual frame time into account.
+		// Due to the high fluctuation of the actual sleep duration, it's not recommended
+		// to use this as a FPS limiter.
+		delay_usec(frame_delay * 1000);
+	}
+
+	// Add a dynamic frame delay to decrease CPU/GPU usage. This takes the
+	// previous frame time into account for a smoother result.
+	uint64_t dynamic_delay = 0;
+	if (is_in_low_processor_usage_mode() || !p_can_draw) {
+		dynamic_delay = get_low_processor_usage_mode_sleep_usec();
+	}
+	const int target_fps = get_target_fps();
+	// need to figure out an equivalent to this or port it from Godot 3
+	bool is_editor = false; // Engine::get_singleton()->is_editor_hint()
+#ifdef TOOLS_ENABLED
+
+#endif
+	if (target_fps > 0 && !is_editor) {
+		// Override the low processor usage mode sleep delay if the target FPS is lower.
+		dynamic_delay = MAX(dynamic_delay, (uint64_t)(1000000 / target_fps));
+	}
+
+	if (dynamic_delay > 0) {
+		target_ticks += dynamic_delay;
+		uint64_t current_ticks = get_ticks_usec();
+
+		if (current_ticks < target_ticks) {
+			delay_usec(target_ticks - current_ticks);
+		}
+
+		current_ticks = get_ticks_usec();
+		target_ticks = MIN(MAX(target_ticks, current_ticks - dynamic_delay), current_ticks + dynamic_delay);
+	}
 }
 
 uint32_t OS::get_ticks_msec() const {
@@ -130,6 +172,14 @@ void OS::set_low_processor_usage_mode(bool p_enabled) {
 bool OS::is_in_low_processor_usage_mode() const {
 
 	return low_processor_usage_mode;
+}
+
+void OS::set_low_processor_usage_mode_sleep_usec(int p_usec) {
+	low_processor_usage_mode_sleep_usec = p_usec;
+}
+
+int OS::get_low_processor_usage_mode_sleep_usec() const {
+	return low_processor_usage_mode_sleep_usec;
 }
 
 void OS::set_clipboard(const String &p_text) {
@@ -573,6 +623,7 @@ OS::OS() {
 	ips = 60;
 	_keep_screen_on = true; // set default value to true, because this had been true before godot 2.0.
 	low_processor_usage_mode = false;
+	low_processor_usage_mode_sleep_usec = 10000;
 	_verbose_stdout = false;
 	_frame_delay = 0;
 	_no_window = false;

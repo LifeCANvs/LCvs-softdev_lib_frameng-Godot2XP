@@ -44,12 +44,14 @@
 class OS {
 
 	static OS *singleton;
+	static uint64_t target_ticks;
 	String _execpath;
 	String _custom_level;
 	List<String> _cmdline;
 	int ips;
 	bool _keep_screen_on;
 	bool low_processor_usage_mode;
+	int low_processor_usage_mode_sleep_usec;
 	bool _verbose_stdout;
 	String _local_clipboard;
 	uint64_t frames_drawn;
@@ -203,6 +205,8 @@ public:
 	virtual bool is_keep_screen_on() const;
 	virtual void set_low_processor_usage_mode(bool p_enabled);
 	virtual bool is_in_low_processor_usage_mode() const;
+	virtual void set_low_processor_usage_mode_sleep_usec(int p_usec);
+	virtual int get_low_processor_usage_mode_sleep_usec() const;
 
 	virtual String get_installed_templates_path() const { return ""; }
 	virtual String get_executable_path() const;
@@ -281,6 +285,8 @@ public:
 	virtual uint64_t get_system_time_secs() const;
 
 	virtual void delay_usec(uint32_t p_usec) const = 0;
+	virtual void add_frame_delay(bool p_can_draw);
+
 	virtual uint64_t get_ticks_usec() const = 0;
 	uint32_t get_ticks_msec() const;
 	uint64_t get_splash_tick_msec() const;

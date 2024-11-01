@@ -1486,7 +1486,6 @@ bool Main::start() {
 }
 
 uint64_t Main::last_ticks = 0;
-uint64_t Main::target_ticks = 0;
 float Main::time_accum = 0;
 uint32_t Main::frames = 0;
 uint32_t Main::frame = 0;
@@ -1625,24 +1624,7 @@ bool Main::iteration() {
 		frames = 0;
 	}
 
-	//if (OS::get_singleton()->is_in_low_processor_usage_mode() || !OS::get_singleton()->can_draw())
-	//	OS::get_singleton()->delay_usec(16600); //apply some delay to force idle time (results in about 60 FPS max)
-	//else {
-	{
-		uint32_t frame_delay = OS::get_singleton()->get_frame_delay();
-		if (frame_delay)
-			OS::get_singleton()->delay_usec(OS::get_singleton()->get_frame_delay() * 1000);
-	}
-
-	int target_fps = OS::get_singleton()->get_target_fps();
-	if (target_fps > 0) {
-		uint64_t time_step = 1000000L / target_fps;
-		target_ticks += time_step;
-		uint64_t current_ticks = OS::get_singleton()->get_ticks_usec();
-		if (current_ticks < target_ticks) OS::get_singleton()->delay_usec(target_ticks - current_ticks);
-		current_ticks = OS::get_singleton()->get_ticks_usec();
-		target_ticks = MIN(MAX(target_ticks, current_ticks - time_step), current_ticks + time_step);
-	}
+	OS::get_singleton()->add_frame_delay(OS::get_singleton()->can_draw());
 
 	return exit;
 }
