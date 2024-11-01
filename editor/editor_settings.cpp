@@ -46,7 +46,7 @@
 #include "scene/main/node.h"
 #include "scene/main/scene_main_loop.h"
 #include "scene/main/viewport.h"
-#include "translations.gen.h"
+//#include "translations.gen.h"
 #include "version.h"
 
 Ref<EditorSettings> EditorSettings::singleton = NULL;
@@ -1034,26 +1034,26 @@ EditorSettings::EditorSettings() {
 	optimize_save = true;
 	save_changed_setting = true;
 
-	EditorTranslationList *etl = _editor_translations;
+	//EditorTranslationList *etl = _editor_translations;
 
-	while (etl->data) {
+	//while (etl->data) {
 
-		Vector<uint8_t> data;
-		data.resize(etl->uncomp_size);
-		Compression::decompress(data.ptr(), etl->uncomp_size, etl->data, etl->comp_size, Compression::MODE_DEFLATE);
+	//	Vector<uint8_t> data;
+	//	data.resize(etl->uncomp_size);
+	//	Compression::decompress(data.ptr(), etl->uncomp_size, etl->data, etl->comp_size, Compression::MODE_DEFLATE);
 
-		FileAccessMemory *fa = memnew(FileAccessMemory);
-		fa->open_custom(data.ptr(), data.size());
+	//	FileAccessMemory *fa = memnew(FileAccessMemory);
+	//	fa->open_custom(data.ptr(), data.size());
 
-		Ref<Translation> tr = TranslationLoaderPO::load_translation(fa, NULL, "translation_" + String(etl->lang));
+	//	Ref<Translation> tr = TranslationLoaderPO::load_translation(fa, NULL, "translation_" + String(etl->lang));
 
-		if (tr.is_valid()) {
-			tr->set_locale(etl->lang);
-			translations.push_back(tr);
-		}
+	//	if (tr.is_valid()) {
+	//		tr->set_locale(etl->lang);
+	//		translations.push_back(tr);
+	//	}
 
-		etl++;
-	}
+	//	etl++;
+	//}
 
 	_load_defaults();
 }
