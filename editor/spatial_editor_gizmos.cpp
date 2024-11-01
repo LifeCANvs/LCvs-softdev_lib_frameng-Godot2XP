@@ -717,6 +717,8 @@ void LightSpatialGizmo::commit_handle(int p_idx, const Variant &p_restore, bool 
 
 void LightSpatialGizmo::redraw() {
 
+	clear();
+
 	if (light->cast_to<DirectionalLight>()) {
 
 		const int arrow_points = 5;
@@ -757,8 +759,6 @@ void LightSpatialGizmo::redraw() {
 
 	if (light->cast_to<OmniLight>()) {
 
-		clear();
-
 		OmniLight *on = light->cast_to<OmniLight>();
 
 		float r = on->get_parameter(Light::PARAM_RADIUS);
@@ -791,8 +791,6 @@ void LightSpatialGizmo::redraw() {
 	}
 
 	if (light->cast_to<SpotLight>()) {
-
-		clear();
 
 		Vector<Vector3> points;
 		SpotLight *on = light->cast_to<SpotLight>();
@@ -1053,6 +1051,8 @@ CameraSpatialGizmo::CameraSpatialGizmo(Camera *p_camera) {
 
 void MeshInstanceSpatialGizmo::redraw() {
 
+	clear();
+
 	Ref<Mesh> m = mesh->get_mesh();
 	if (!m.is_valid())
 		return; //none
@@ -1287,6 +1287,7 @@ SkeletonSpatialGizmo::SkeletonSpatialGizmo(Skeleton *p_skel) {
 void SpatialPlayerSpatialGizmo::redraw() {
 
 	clear();
+
 	if (splayer->cast_to<SpatialStreamPlayer>()) {
 
 		add_unscaled_billboard(SpatialEditorGizmos::singleton->stream_player_icon, 0.05);
@@ -1308,6 +1309,7 @@ SpatialPlayerSpatialGizmo::SpatialPlayerSpatialGizmo(SpatialPlayer *p_splayer) {
 void RoomSpatialGizmo::redraw() {
 
 	clear();
+
 	Ref<Room> roomie = room->get_room();
 	if (roomie.is_null())
 		return;
@@ -1491,6 +1493,7 @@ VehicleWheelSpatialGizmo::VehicleWheelSpatialGizmo(VehicleWheel *p_car_wheel) {
 void TestCubeSpatialGizmo::redraw() {
 
 	clear();
+
 	add_collision_triangles(SpatialEditorGizmos::singleton->test_cube_tm);
 }
 
@@ -2076,6 +2079,7 @@ VisibilityNotifierGizmo::VisibilityNotifierGizmo(VisibilityNotifier *p_notifier)
 void NavigationMeshSpatialGizmo::redraw() {
 
 	clear();
+
 	Ref<NavigationMesh> navmeshie = navmesh->get_navigation_mesh();
 	if (navmeshie.is_null())
 		return;
@@ -2172,6 +2176,7 @@ NavigationMeshSpatialGizmo::NavigationMeshSpatialGizmo(NavigationMeshInstance *p
 void PinJointSpatialGizmo::redraw() {
 
 	clear();
+
 	Vector<Vector3> cursor_points;
 	float cs = 0.25;
 	cursor_points.push_back(Vector3(+cs, 0, 0));
@@ -2195,6 +2200,7 @@ PinJointSpatialGizmo::PinJointSpatialGizmo(PinJoint *p_p3d) {
 void HingeJointSpatialGizmo::redraw() {
 
 	clear();
+
 	Vector<Vector3> cursor_points;
 	float cs = 0.25;
 	/*cursor_points.push_back(Vector3(+cs,0,0));
@@ -2268,6 +2274,7 @@ HingeJointSpatialGizmo::HingeJointSpatialGizmo(HingeJoint *p_p3d) {
 void SliderJointSpatialGizmo::redraw() {
 
 	clear();
+
 	Vector<Vector3> cursor_points;
 	float cs = 0.25;
 	/*cursor_points.push_back(Vector3(+cs,0,0));
@@ -2372,6 +2379,7 @@ SliderJointSpatialGizmo::SliderJointSpatialGizmo(SliderJoint *p_p3d) {
 void ConeTwistJointSpatialGizmo::redraw() {
 
 	clear();
+
 	Vector<Vector3> points;
 
 	float r = 1.0;
@@ -2447,6 +2455,7 @@ ConeTwistJointSpatialGizmo::ConeTwistJointSpatialGizmo(ConeTwistJoint *p_p3d) {
 void Generic6DOFJointSpatialGizmo::redraw() {
 
 	clear();
+
 	Vector<Vector3> cursor_points;
 	float cs = 0.25;
 
