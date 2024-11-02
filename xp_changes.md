@@ -1,4 +1,4 @@
-## GDXP 2.2 dev
+## GDXP 2.2 dev1
 
 #### General
 - Renamed to GDXP 2.2
@@ -8,7 +8,9 @@
 - Fixed chibi tracker module player's panning so your left ear can also enjoy the music.
 - Backported sync_via_compositor from Godot 3. It's on by default now.
 - Removed artificial delay from low processor mode since it made the editor feel awful to use.
-
+- Backported the frame delay code from Godot 3 because the above would spinwait on low procesor mode... :)
+- Fixed the editor gizmo for directional lights layering up every time you clicked it, becoming brighter each time.
+- Updated copyright statements and authors file.
 
 ## Godot 2.1.7 RC interim version
 
