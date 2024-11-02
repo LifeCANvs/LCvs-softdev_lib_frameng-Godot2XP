@@ -1,5 +1,7 @@
 ## GDXP - What is this?
 
+![Screenshot of a 3D scene in the GDXP editor](/editor_screenshot.png)
+
 GDXP is a fork of Godot 2.1.7 RC that targets legacy Windows for fun, and implements an OpenGL 1.x compatible renderer.  
 **GDXP is unofficial and not affiliated with the Godot project.**  
 If you're looking for the regular version of Godot, you can find it here: https://godotengine.org
