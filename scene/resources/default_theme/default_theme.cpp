@@ -210,10 +210,7 @@ void fill_default_theme(Ref<Theme> &t, const Ref<Font> &default_font, const Ref<
 
 	// Focus
 
-	Ref<StyleBoxTexture> focus = make_stylebox(focus_png, 6, 6, 6, 6, 3, 3, 3, 3);
-	for (int i = 0; i < 4; i++) {
-		focus->set_expand_margin_size(Margin(i), 2 * scale);
-	}
+	Ref<StyleBoxTexture> focus = sb_expand(make_stylebox(focus_png, 6, 6, 6, 6, 3, 3, 3, 3), 2, 2, 2, 1);
 
 	// Button
 
@@ -221,7 +218,7 @@ void fill_default_theme(Ref<Theme> &t, const Ref<Font> &default_font, const Ref<
 	Ref<StyleBox> sb_button_pressed = make_stylebox(button_pressed_png, 5, 5, 5, 5, 3, 3, 3, 3);
 	Ref<StyleBox> sb_button_hover = make_stylebox(button_hover_png, 5, 5, 5, 5, 3, 0, 3, 0);
 	Ref<StyleBox> sb_button_disabled = make_stylebox(button_disabled_png, 5, 5, 5, 5, 3, 3, 3, 3);
-	Ref<StyleBox> sb_button_focus = sb_expand(make_stylebox(focus_png, 6, 6, 6, 6, 3, 3, 3, 3), 2, 2, 2, 2);
+	Ref<StyleBox> sb_button_focus = sb_expand(make_stylebox(focus_png, 6, 6, 6, 6, 3, 3, 3, 3), 2, 2, 2, 1);
 
 	t->set_stylebox("normal", "Button", sb_button_normal);
 	t->set_stylebox("pressed", "Button", sb_button_pressed);
@@ -336,7 +333,7 @@ void fill_default_theme(Ref<Theme> &t, const Ref<Font> &default_font, const Ref<
 	cbx_empty->set_default_margin(MARGIN_RIGHT, 4 * scale);
 	cbx_empty->set_default_margin(MARGIN_TOP, 4 * scale);
 	cbx_empty->set_default_margin(MARGIN_BOTTOM, 5 * scale);
-	Ref<StyleBox> cbx_focus = focus;
+	Ref<StyleBox> cbx_focus = make_stylebox(focus_png, 6, 6, 6, 6, 3, 3, 3, 3);
 	cbx_focus->set_default_margin(MARGIN_LEFT, 4 * scale);
 	cbx_focus->set_default_margin(MARGIN_RIGHT, 22 * scale);
 	cbx_focus->set_default_margin(MARGIN_TOP, 4 * scale);
