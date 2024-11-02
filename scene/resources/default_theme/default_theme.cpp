@@ -139,6 +139,20 @@ static Ref<BitmapFont> make_font2(int p_height, int p_ascent, int p_charcount, c
 	Ref<BitmapFont> font(memnew(BitmapFont));
 
 	Image image(p_img);
+
+	// force image colors to be white, keeping alpha. couldn't find a better way to do this
+	int w = image.get_width();
+	int h = image.get_height();
+	for (int x = 0; x < w; x++) {
+		for (int y = 0; y < h; y++) {
+			Color c = image.get_pixel(x, y);
+			c.r = 1.0f;
+			c.g = 1.0f;
+			c.b = 1.0f;
+			image.put_pixel(x, y, c);
+		}
+	}
+
 	Ref<ImageTexture> tex = memnew(ImageTexture);
 	tex->create_from_image(image);
 
