@@ -10,6 +10,5 @@ This page is intended as a public dump of my thoughts and doesn't represent an o
 - Make multi-texturing and vertex buffer objects optional features for GLES1 to lower the required OpenGL version, 
 add feature caps emulation via project settings or editor viewport setting.
 - I hate the way the Godot 2 FileSystem dock works and I really want the Godot 3 version.
-- Add a way to toggle channels on/off for the EventPlayer, for dynamic music.
 - TSCN files do not generate previews for some reason while SCN files do.
 - Find out why the editor shits itself occasionally, TextInputs stop working, and the editor stops resizing correctly.
