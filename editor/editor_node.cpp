@@ -6137,7 +6137,8 @@ EditorNode::EditorNode() {
 	about->add_child(vbc);
 	vbc->add_child(hbc);
 	Label *about_text = memnew(Label);
-	about_text->set_text(VERSION_FULL_NAME + String("\n(c) 2007-2020 Juan Linietsky, Ariel Manzur.\n(c) 2014-2020 ") + TTR("Godot Engine contributors") + "\n");
+	about_text->set_text(VERSION_FULL_NAME + String(" (c) 2024 Kleadron Software.\n Godot Engine (c) 2014-present Godot Engine Contributors \n (c) 2007-2014 Juan Linietsky, Ariel Manzur.") +
+	String("\n\nThis software uses portions of Godot 3 source code.\nAs it's virtually impossible to credit the contributors individually,\nthe full authors list of Godot 3 is included here."));
 	TextureFrame *logo = memnew(TextureFrame);
 	logo->set_texture(gui_base->get_icon("Logo", "EditorIcons"));
 	hbc->add_child(logo);
@@ -6146,7 +6147,7 @@ EditorNode::EditorNode() {
 	tc->set_custom_minimum_size(Vector2(740, 300));
 	vbc->add_child(tc);
 	ScrollContainer *dev_base = memnew(ScrollContainer);
-	dev_base->set_name(TTR("Developers"));
+	dev_base->set_name(TTR("Godot Developers"));
 	tc->add_child(dev_base);
 	HBoxContainer *dev_hbc = memnew(HBoxContainer);
 	dev_hbc->set_h_size_flags(Control::SIZE_EXPAND_FILL);

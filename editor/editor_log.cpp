@@ -188,7 +188,8 @@ EditorLog::EditorLog() {
 	log->set_selection_enabled(true);
 	log->set_focus_mode(FOCUS_CLICK);
 	pc->add_child(log);
-	add_message(VERSION_FULL_NAME " (c) 2007-2020 Juan Linietsky, Ariel Manzur.");
+	add_message(VERSION_FULL_NAME " (c) 2024 Kleadron Software.");
+	add_message("Godot Engine (c) 2007-present Juan Linietsky, Ariel Manzur & Godot Contributors.");
 	//log->add_text("Initialization Complete.\n"); //because it looks cool.
 
 	eh.errfunc = _error_handler;

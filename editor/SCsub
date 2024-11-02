@@ -151,7 +151,7 @@ def make_authors_header(target, source, env):
     for line in f:
         if name_count >= 0:
             if line.startswith("    "):
-                g.write("\t\"" + line.strip() + "\",\n")
+                g.write("\t\"" + line.strip().replace("\"", "\\\"") + "\",\n")
                 name_count += 1
         elif line.strip() == "## Developers":
             name_count = 0
