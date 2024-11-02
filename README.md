@@ -64,7 +64,6 @@ You may need to optimize your games well if you intend to build anything substan
   The GLES2 renderer allows you to select textures for features like specular/bump/emission, but in the GLES1 renderer
   these are treated as vertex lighting modifiers.
 - ShaderMaterials and Shaders do not work AT ALL. This would require OpenGL extensions to support.
-for more info.
 
 #### Attributions
 
