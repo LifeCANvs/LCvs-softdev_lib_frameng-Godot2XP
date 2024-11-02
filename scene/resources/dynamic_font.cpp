@@ -531,8 +531,9 @@ void DynamicFontAtSize::_update_char(CharType p_char) {
 			//zero texture
 			DVector<uint8_t>::Write w = tex.imgdata.write();
 			ERR_FAIL_COND(texsize * texsize * 2 > tex.imgdata.size());
-			for (int i = 0; i < texsize * texsize * 2; i++) {
-				w[i] = 0;
+			for (int i = 0; i < texsize * texsize * 2; i+=2) {
+				w[i + 0] = 255; // grayscale
+				w[i + 1] = 0;   // alpha
 			}
 		}
 		tex.offsets.resize(texsize);
