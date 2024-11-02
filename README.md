@@ -71,4 +71,4 @@ for more info.
 This software uses portions of [Godot 3](https://github.com/godotengine/godot/tree/3.x) source code.  
 As it is impossible for me to individually credit every contributor's line of code that I've used, I decided to include the full contributor's list.  
 I have also updated the visible copyright dates to match Godot 3's.  
-I've done my best to attribute them correctly. If I've made a mistake, create an issue about it and we can work it out.
+I've done my best to attribute them correctly. I'm not a legal expert, so if I've made a mistake, create an issue about it and we can work it out.
