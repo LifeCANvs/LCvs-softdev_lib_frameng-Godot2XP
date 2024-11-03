@@ -6503,7 +6503,7 @@ bool RasterizerGLES1::is_fx(const RID& p_rid) const {
 }
 bool RasterizerGLES1::is_shader(const RID& p_rid) const {
 
-	return false;
+	return shader_owner.owns(p_rid);
 }
 
 bool RasterizerGLES1::is_canvas_light_occluder(const RID &p_rid) const {
