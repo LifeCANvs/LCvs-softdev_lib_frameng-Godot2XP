@@ -251,6 +251,10 @@ void MeshInstance::_notification(int p_what) {
 	}
 }
 
+int MeshInstance::get_surface_material_count() const {
+	return materials.size();
+}
+
 void MeshInstance::set_surface_material(int p_surface, const Ref<Material> &p_material) {
 
 	ERR_FAIL_INDEX(p_surface, materials.size());
@@ -270,6 +274,25 @@ Ref<Material> MeshInstance::get_surface_material(int p_surface) const {
 	return materials[p_surface];
 }
 
+Ref<Material> MeshInstance::get_active_material(int p_surface) const {
+	Ref<Material> material_override = get_material_override();
+	if (material_override.is_valid()) {
+		return material_override;
+	}
+
+	Ref<Material> surface_material = get_surface_material(p_surface);
+	if (surface_material.is_valid()) {
+		return surface_material;
+	}
+
+	Ref<Mesh> mesh = get_mesh();
+	if (mesh.is_valid()) {
+		return mesh->surface_get_material(p_surface);
+	}
+
+	return Ref<Material>();
+}
+
 void MeshInstance::_mesh_changed() {
 
 	materials.resize(mesh->get_surface_count());
@@ -279,14 +302,24 @@ void MeshInstance::_bind_methods() {
 
 	ObjectTypeDB::bind_method(_MD("set_mesh", "mesh:Mesh"), &MeshInstance::set_mesh);
 	ObjectTypeDB::bind_method(_MD("get_mesh:Mesh"), &MeshInstance::get_mesh);
+
+	ObjectTypeDB::bind_method(_MD("get_surface_material_count"), &MeshInstance::get_surface_material_count);
+	ObjectTypeDB::bind_method(_MD("set_surface_material", "surface:int", "material:Material"), &MeshInstance::set_surface_material);
+	ObjectTypeDB::bind_method(_MD("get_surface_material", "surface:int"), &MeshInstance::get_surface_material);
+	ObjectTypeDB::bind_method(_MD("get_active_material", "surface:int"), &MeshInstance::get_active_material);
+
 	ObjectTypeDB::bind_method(_MD("set_skeleton_path", "skeleton_path:NodePath"), &MeshInstance::set_skeleton_path);
 	ObjectTypeDB::bind_method(_MD("get_skeleton_path:NodePath"), &MeshInstance::get_skeleton_path);
+
 	ObjectTypeDB::bind_method(_MD("get_aabb"), &MeshInstance::get_aabb);
+
 	ObjectTypeDB::bind_method(_MD("create_trimesh_collision"), &MeshInstance::create_trimesh_collision);
 	ObjectTypeDB::set_method_flags("MeshInstance", "create_trimesh_collision", METHOD_FLAGS_DEFAULT);
 	ObjectTypeDB::bind_method(_MD("create_convex_collision"), &MeshInstance::create_convex_collision);
 	ObjectTypeDB::set_method_flags("MeshInstance", "create_convex_collision", METHOD_FLAGS_DEFAULT);
+
 	ObjectTypeDB::bind_method(_MD("_mesh_changed"), &MeshInstance::_mesh_changed);
+
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "mesh/mesh", PROPERTY_HINT_RESOURCE_TYPE, "Mesh"), _SCS("set_mesh"), _SCS("get_mesh"));
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "mesh/skeleton"), _SCS("set_skeleton_path"), _SCS("get_skeleton_path"));
 }
