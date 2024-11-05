@@ -9627,8 +9627,14 @@ bool RasterizerGLES2::ShadowBuffer::init(int p_size, bool p_use_depth) {
 				GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL);
 
 #ifdef GLEW_ENABLED
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		if (bool(GLOBAL_DEF("rasterizer/depth_shadows_filtered", false))) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		}
+		else {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		}
 #endif
 
 		// Attach the depth texture to FBO depth attachment point
